@@ -1,0 +1,62 @@
+'use client';
+
+import APICaller from "@/utils/APICaller";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+
+export default function Login() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const router = useRouter();
+
+    async function handleLogin() {
+        if (!email || !password) {
+            return;
+        }
+        try {
+            const requestData = { email, password };
+            const response = await APICaller("/api/login", "POST", requestData);
+            if (response.success) {
+                localStorage.setItem("token", response.token);
+            }
+        } catch (error) {
+            console.error("Erro ao fazer login:", error);
+        }
+    }
+
+    async function handleRegister() {
+        if (!email || !password) {
+            return;
+        }
+        try {
+            const requestData = { email, password };
+            const response = await APICaller("/api/register", "POST", requestData);
+            if (response.success) {
+                localStorage.setItem("token", response.token);
+                router.push("/dashboard");
+            }
+        } catch (error) {
+            console.error("Error resi:", error);
+        }
+    };
+
+    return (
+        <div>
+            <input
+                type="text"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+            />
+            <input
+                type="password"
+                placeholder="Senha"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+            />
+            <button onClick={handleLogin} className="mr-10">Login</button>
+            <button onClick={handleRegister}>Register</button>
+        </div>
+    )
+
+}
