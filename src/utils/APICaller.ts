@@ -16,8 +16,8 @@ export default function APICaller(
         if (methodType !== "GET") {
             request.body = JSON.stringify(body);
         }
-        getData(fetch(endpointURL, request));
-        return;
+
+        return getData(fetch(endpointURL, request));
     }
     return getData(fetch(endpointURL, {
         method: methodType,

@@ -36,9 +36,17 @@ export default function Login() {
                 router.push("/dashboard");
             }
         } catch (error) {
-            console.error("Error resi:", error);
+            console.error("Error ao registrar:", error);
         }
     };
+
+    async function helloWorld() {
+        try {
+            const response = await APICaller("/api/helloworld", "GET");
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
 
     return (
         <div>
@@ -55,7 +63,8 @@ export default function Login() {
                 onChange={(e) => setPassword(e.target.value)}
             />
             <button onClick={handleLogin} className="mr-10">Login</button>
-            <button onClick={handleRegister}>Register</button>
+            <button onClick={handleRegister} className="mr-10">Register</button>
+            <button onClick={helloWorld} className="mr-10">hello world (needs auth)</button>
         </div>
     )
 

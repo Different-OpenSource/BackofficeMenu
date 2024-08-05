@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import TerribleWayToStoreUserWithoutDB from "../DBTemporarySubstitute";
+import DBTemporarySubstitute from "../DBTemporarySubstitute";
 
 export async function POST(request: NextRequest) {
     try {
         const reqBody = await request.json();
         const { email, password } = reqBody;
 
-        const user = TerribleWayToStoreUserWithoutDB.find((user) => user.email === email);
+        const user = DBTemporarySubstitute.find((user) => user.email === email);
 
         if (!user) {
             return NextResponse.json(
