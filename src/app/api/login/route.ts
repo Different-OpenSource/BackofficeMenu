@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     if (!user) {
       return NextResponse.json(
         { error: "Usuário ou senha inválidos", status: 400 },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
     if (!validPassword) {
       return NextResponse.json(
         { error: "Usuário ou senha inválidos", status: 400 },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
   } catch (error: any) {
     return NextResponse.json(
       { error: error.message, status: 500 },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
