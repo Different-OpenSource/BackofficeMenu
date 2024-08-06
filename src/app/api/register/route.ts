@@ -13,7 +13,10 @@ export async function POST(request: NextRequest, response: NextResponse) {
         password: encryptedPassword,
       },
     });
-    return NextResponse.json({ message: "User created" }, { status: 201 });
+    return NextResponse.json(
+      { message: "User created", success: true },
+      { status: 201 }
+    );
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }

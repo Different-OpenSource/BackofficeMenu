@@ -1,7 +1,7 @@
 export default function APICaller(
   endpointURL: string,
   methodType: string,
-  body?: any,
+  body?: any
 ) {
   const token = localStorage.getItem("token");
   if (token) {
@@ -26,7 +26,7 @@ export default function APICaller(
         "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
-    }),
+    })
   );
 }
 
@@ -35,8 +35,5 @@ function getData(promise: Promise<Response>) {
     .then((response) => response.json())
     .then((data) => {
       return data;
-    })
-    .catch((error) => {
-      console.error("Error:", error);
     });
 }

@@ -1,79 +1,58 @@
-'use client';
+"use client";
 
+import Button from "@/components/Button";
+import TextInput from "@/components/TextInput";
 import APICaller from "@/utils/APICaller";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function Login() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-    const router = useRouter();
+  const router = useRouter();
 
-    async function handleLogin() {
-        if (!email || !password) {
-            return;
-        }
-        try {
-            const requestData = { email, password };
-            const response = await APICaller("/api/login", "POST", requestData);
-            if (response.success) {
-                localStorage.setItem("token", response.token);
-            }
-        } catch (error) {
-            console.error("Erro ao fazer login:", error);
-        }
+  async function handleLogin() {
+    if (!email || !password) {
+      return;
     }
-
-    async function handleRegister() {
-        if (!email || !password || !name) {
-            return;
-        }
-        try {
-            const requestData = { email, password, name };
-            const response = await APICaller("/api/register", "POST", requestData);
-            if (response.success) {
-                localStorage.setItem("token", response.token);
-                router.push("/dashboard");
-            }
-        } catch (error) {
-            console.error("Error ao registrar:", error);
-        }
-    };
-
-    async function helloWorld() {
-        try {
-            const response = await APICaller("/api/helloworld", "GET");
-        } catch (error) {
-            console.error("Error:", error);
-        }
+    try {
+      const requestData = { email, password };
+      const response = await APICaller("/api/login", "POST", requestData);
+      if (response.success) {
+        localStorage.setItem("token", response.token);
+      }
+    } catch (error) {
+      console.error("Erro ao fazer login:", error);
     }
+  }
 
-    return (
-        <div>
-            <input
-                type="text"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-            />
-            <input
-                type="text"
-                placeholder="Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-            />
-            <input
-                type="password"
-                placeholder="Senha"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-            />
-            <button onClick={handleLogin} className="mr-10">Login</button>
-            <button onClick={handleRegister} className="mr-10">Register</button>
-            <button onClick={helloWorld} className="mr-10">hello world (needs auth)</button>
+  return (
+    <div className="flex w-full h-full justify-center items-center">
+      <div className="flex flex-col w-96 shadow-xl p-10 rounded-lg gap-2">
+        <TextInput
+          setName={setEmail}
+          value={email}
+          type="email"
+          label="Email"
+          placeholder="john.doe@company.com"
+        />
+        <TextInput
+          setName={setPassword}
+          value={password}
+          type="password"
+          label="Senha"
+          placeholder="•••••••••"
+        />
+        <div className="flex gap-2 mt-4">
+          <Button
+            text="Registrar-se"
+            onClick={() => router.push("/register")}
+            style="outline"
+          ></Button>
+          <Button text="Entrar" onClick={handleLogin} style="primary"></Button>
         </div>
-    )
-
+      </div>
+    </div>
+  );
 }
