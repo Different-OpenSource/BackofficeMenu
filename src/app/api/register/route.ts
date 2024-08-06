@@ -6,7 +6,15 @@ export async function POST(request: NextRequest, response: NextResponse) {
   try {
     const data = await request.json();
     const encryptedPassword = await bcrypt.hash(data.password, 1);
-    const user = await prisma.user.create({
+    const existingUser = await prisma.user.findUnique({
+      where: { email: data.email },
+    });
+
+    if (existingUser) {
+      return NextResponse.json({ error: "Usuário já existe" }, { status: 400 });
+    }
+
+    await prisma.user.create({
       data: {
         email: data.email,
         name: data.name,

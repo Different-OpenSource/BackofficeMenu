@@ -26,6 +26,7 @@ export default function Register() {
         toast.success("Registrado com sucesso!");
         router.replace("/login");
       }
+      response.error && toast.error(response.error);
     } catch (error) {
       toast.error("Erro ao registrar!");
       console.error("Error ao registrar:", error);
