@@ -21,6 +21,7 @@ export default function Login() {
       const response = await APICaller("/api/login", "POST", requestData);
       if (response.success) {
         localStorage.setItem("token", response.token);
+        router.push("/");
       }
     } catch (error) {
       console.error("Erro ao fazer login:", error);

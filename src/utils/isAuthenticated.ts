@@ -17,10 +17,11 @@ export function useAuthRedirect() {
 
   const checkAuth = async () => {
     const auth = await isAuthenticated();
-    if (!auth) {
-      router.push("/login");
+    if (auth) {
+      setIsAuth(true);
+      return;
     }
-    setIsAuth(true);
+    router.push("/login");
   };
   useEffect(() => {
     checkAuth();
