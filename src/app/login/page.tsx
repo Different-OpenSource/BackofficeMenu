@@ -7,6 +7,8 @@ import { useState } from "react";
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [name, setName] = useState("");
+
     const router = useRouter();
 
     async function handleLogin() {
@@ -25,11 +27,11 @@ export default function Login() {
     }
 
     async function handleRegister() {
-        if (!email || !password) {
+        if (!email || !password || !name) {
             return;
         }
         try {
-            const requestData = { email, password };
+            const requestData = { email, password, name };
             const response = await APICaller("/api/register", "POST", requestData);
             if (response.success) {
                 localStorage.setItem("token", response.token);
@@ -55,6 +57,12 @@ export default function Login() {
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+            />
+            <input
+                type="text"
+                placeholder="Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
             />
             <input
                 type="password"
