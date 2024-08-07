@@ -24,7 +24,7 @@ export default function Register() {
       const response = await APICaller("/api/register", "POST", requestData);
       if (response.success) {
         toast.success("Registrado com sucesso!");
-        router.replace("/login");
+        router.replace(`/login?email=${email}`);
       }
       response.error && toast.error(response.error);
     } catch (error) {

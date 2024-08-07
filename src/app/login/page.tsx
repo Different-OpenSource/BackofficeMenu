@@ -3,18 +3,20 @@
 import Button from "@/components/Button";
 import TextInput from "@/components/TextInput";
 import APICaller from "@/utils/APICaller";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
+  const params = useSearchParams();
+  const [email, setEmail] = useState(params.get("email") || "");
   const [password, setPassword] = useState("");
 
   const router = useRouter();
 
   async function handleLogin() {
     if (!email || !password) {
+      toast.error("Preencha todos os campos");
       return;
     }
     try {
