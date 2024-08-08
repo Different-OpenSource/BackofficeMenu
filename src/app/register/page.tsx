@@ -11,7 +11,6 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
 
   const router = useRouter();
 
@@ -55,13 +54,6 @@ export default function Register() {
           value={password}
           type="password"
           label="Senha"
-          placeholder="•••••••••"
-        />
-        <TextInput
-          setName={setConfirmPassword}
-          value={confirmPassword}
-          type="password"
-          label="Confirmar Senha"
           placeholder="•••••••••"
         />
         <div className="flex gap-2 mt-4">
