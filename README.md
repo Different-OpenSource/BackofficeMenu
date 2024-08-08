@@ -34,7 +34,7 @@ Create a .env file in the root directory of your project. This file will hold yo
 
 ```
 DATABASE_URL = "postgresql://postgres:mysecretpassword@localhost:5432/postgres"
-NEXT_PUBLIC_JWT_KEY = insert_key_here
+NEXT_PUBLIC_JWT_KEY = your_jwt_key_here
 ```
 
 Ensure you replace your_jwt_key_here with your actual JWT key.
