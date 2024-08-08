@@ -5,9 +5,6 @@
 @layer base {
   html {
     --color-primary: #4285f4;
-    --color-secondary: #34a853;
-    --color-buttons: #fbbc05;
-    --color-typography: #ea4335;
     --foreground-rgb: 0, 0, 0;
     --background-start-rgb: 214, 219, 220;
     --background-end-rgb: 255, 255, 255;
@@ -15,10 +12,7 @@
 }
 
 html[data-theme="dark"] {
-  --color-primary: #f98866;
-  --color-secondary: #80bd9e;
-  --color-buttons: #89da59;
-  --color-typography: #ff320e;
+  --color-primary: #4285f4;
   --foreground-rgb: 255, 255, 255;
   --background-start-rgb: 0, 0, 0;
   --background-end-rgb: 0, 0, 0;
