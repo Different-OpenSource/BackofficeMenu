@@ -14,8 +14,10 @@ export async function POST(request: NextRequest, response: NextResponse) {
       return NextResponse.json({ error: "Usuário já existe" }, { status: 400 });
     }
 
+    const store = await prisma.store.findFirst();
     await prisma.user.create({
       data: {
+        storeId: store!.id,
         email: data.email,
         name: data.name,
         password: encryptedPassword,
