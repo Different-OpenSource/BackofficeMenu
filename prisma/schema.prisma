@@ -14,8 +14,46 @@ datasource db {
 }
 
 model User {
-    id       Int     @id @default(autoincrement())
-    email    String  @unique
-    name     String?
-    password String
+  id       String   @id @default(uuid())
+  email    String   @unique
+  password String
+  name     String
+  isAdmin  Boolean?
+  storeId  String
+  Store    Store    @relation(fields: [storeId], references: [id])
+}
+
+model Menu {
+  id         String     @id @default(uuid())
+  categories Category[]
+  store      Store      @relation(fields: [storeId], references: [id])
+  storeId    String
+}
+
+model Store {
+  id          String @id @default(uuid())
+  image       String
+  name        String
+  description String
+  User        User[]
+  Menu        Menu[]
+}
+
+model Category {
+  id     String  @id @default(uuid())
+  name   String
+  items  Item[]
+  Menu   Menu?   @relation(fields: [menuId], references: [id])
+  menuId String?
+}
+
+model Item {
+  id               String    @id @default(uuid())
+  name             String
+  description      String
+  price            Decimal   @db.Decimal(8, 2)
+  image            String
+  shortDescription String
+  Category         Category? @relation(fields: [categoryId], references: [id])
+  categoryId       String?
 }

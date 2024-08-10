@@ -5,7 +5,7 @@ import prisma from "../../../../lib/prisma";
 export async function POST(request: NextRequest, response: NextResponse) {
   try {
     const data = await request.json();
-    const encryptedPassword = await bcrypt.hash(data.password, 1);
+    const encryptedPassword = await bcrypt.hash(data.password, 16);
     const existingUser = await prisma.user.findUnique({
       where: { email: data.email },
     });
