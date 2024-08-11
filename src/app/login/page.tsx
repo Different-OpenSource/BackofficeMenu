@@ -24,7 +24,7 @@ export default function Login() {
       const response = await APICaller("/api/login", "POST", requestData);
       if (response.success) {
         localStorage.setItem("token", response.token);
-        router.push("/");
+        router.push("/menus");
       } else {
         toast.error("Usuário ou senha inválidos");
       }

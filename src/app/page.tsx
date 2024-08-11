@@ -1,30 +1,16 @@
 "use client";
 
-import APICaller from "@/utils/APICaller";
 import { useAuthRedirect } from "@/utils/isAuthenticated";
-import { Fragment, useContext, useEffect, useState } from "react";
-import { StoreContext } from "./contexts/StoreContext";
-
-interface Store {
-  id: string;
-  name: string;
-  description: string;
-  image: string;
-}
+import { useRouter } from "next/navigation";
+import { Fragment, useEffect } from "react";
 
 export default function Home() {
-  const storeContext = useContext(StoreContext);
   const isAuth = useAuthRedirect();
-
+  const router = useRouter();
   useEffect(() => {
-    storeContext.getStoreData();
-  }, []);
-
-  return isAuth ? (
-    <div>
-      <div>Home here</div>
-    </div>
-  ) : (
-    <Fragment />
-  );
+    if (isAuth) {
+      router.replace("/menus");
+    }
+  }, [isAuth]);
+  return <Fragment />;
 }

@@ -12,7 +12,7 @@ async function isAuthenticated() {
 }
 
 export function useAuthRedirect() {
-  const [isAuth, setIsAuth] = useState(false);
+  const [isAuth, setIsAuth] = useState<boolean | null>(null);
   const router = useRouter();
 
   const checkAuth = async () => {
@@ -21,6 +21,7 @@ export function useAuthRedirect() {
       setIsAuth(true);
       return;
     }
+    setIsAuth(false);
     router.push("/login");
   };
   useEffect(() => {

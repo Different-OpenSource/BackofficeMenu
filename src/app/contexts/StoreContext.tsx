@@ -1,13 +1,7 @@
 "use client";
 import APICaller from "@/utils/APICaller";
 import { Store } from "@prisma/client";
-import React, {
-  createContext,
-  Dispatch,
-  ReactNode,
-  SetStateAction,
-  useState,
-} from "react";
+import React, { createContext, ReactNode, useState } from "react";
 
 export const StoreContext = createContext<{
   store: Store | null;
@@ -23,7 +17,7 @@ export default function StoreContextProvider({
 
   async function getStoreData() {
     try {
-      const response = await APICaller("/api/storeData", "GET", {});
+      const response = await APICaller("/api/store", "GET", {});
       setStore(response.store);
     } catch (error) {
       console.error("Erro ao fazer login:", error);

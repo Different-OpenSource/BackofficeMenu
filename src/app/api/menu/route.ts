@@ -5,8 +5,6 @@ import { getDataToken } from "@/utils/getDataToken";
 export async function GET(request: NextRequest, response: NextResponse) {
   try {
     const token = await getDataToken(request);
-    console.log(token);
-
     const user = await prisma.user.findUnique({
       where: { email: token.email },
     });
@@ -16,11 +14,11 @@ export async function GET(request: NextRequest, response: NextResponse) {
         { status: 400 }
       );
     }
-    const store = await prisma.store.findUnique({
-      where: { id: user.storeId },
+    const menus = await prisma.menu.findMany({
+      where: { storeId: user.storeId },
     });
 
-    return NextResponse.json({ store }, { status: 200 });
+    return NextResponse.json({ menus }, { status: 200 });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
