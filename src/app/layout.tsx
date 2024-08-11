@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
+import StoreContextProvider from "./contexts/StoreContext";
+import Header from "@/components/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +21,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Toaster position="top-center" />
-        <div className="w-dvw h-dvh">{children}</div>
+        <StoreContextProvider>
+          <div className="w-dvw h-dvh flex flex-col">
+            <Header />
+            {children}
+          </div>
+        </StoreContextProvider>
       </body>
     </html>
   );

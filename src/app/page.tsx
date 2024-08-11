@@ -1,30 +1,30 @@
 "use client";
 
-import Button from "@/components/Button";
 import APICaller from "@/utils/APICaller";
 import { useAuthRedirect } from "@/utils/isAuthenticated";
+import { Fragment, useContext, useEffect, useState } from "react";
+import { StoreContext } from "./contexts/StoreContext";
+
+interface Store {
+  id: string;
+  name: string;
+  description: string;
+  image: string;
+}
 
 export default function Home() {
+  const storeContext = useContext(StoreContext);
   const isAuth = useAuthRedirect();
 
-  async function helloWorld() {
-    try {
-      const response = await APICaller("/api/helloworld", "GET");
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  }
+  useEffect(() => {
+    storeContext.getStoreData();
+  }, []);
 
-  return (
+  return isAuth ? (
     <div>
-      Home page
-      {isAuth && (
-        <Button
-          onClick={helloWorld}
-          text="hello world (needs auth)"
-          style="primary"
-        />
-      )}
+      <div>Home here</div>
     </div>
+  ) : (
+    <Fragment />
   );
 }

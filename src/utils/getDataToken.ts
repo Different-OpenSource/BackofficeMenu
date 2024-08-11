@@ -5,7 +5,7 @@ export const getDataToken = (request: NextRequest) => {
   try {
     const token = request.headers.get("Authorization")?.split(" ")[1] || "";
     const tokenInfo: any = jwt.verify(token, process.env.NEXT_PUBLIC_JWT_KEY!);
-    return tokenInfo.id;
+    return tokenInfo;
   } catch (error: any) {
     throw new Error(error.message);
   }
