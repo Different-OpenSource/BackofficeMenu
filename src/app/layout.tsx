@@ -20,6 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <div id="portal-root"></div>
         <Toaster position="top-center" />
         <StoreContextProvider>
           <div className="w-dvw h-dvh flex flex-col">

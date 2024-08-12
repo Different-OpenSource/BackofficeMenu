@@ -37,14 +37,14 @@ export default function Login() {
     <div className="flex w-full h-full justify-center items-center">
       <div className="flex flex-col w-96 shadow-xl p-10 rounded-lg gap-2">
         <TextInput
-          setName={setEmail}
+          setValue={setEmail}
           value={email}
           type="email"
           label="Email"
           placeholder="john.doe@company.com"
         />
         <TextInput
-          setName={setPassword}
+          setValue={setPassword}
           value={password}
           type="password"
           label="Senha"
