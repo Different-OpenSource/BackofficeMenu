@@ -1,7 +1,7 @@
 "use client";
 
 import { StoreContext } from "@/app/contexts/StoreContext";
-import { Fragment, useContext } from "react";
+import { Fragment, useContext, useEffect } from "react";
 import mockLogo from "../assets/mockLogo.png";
 import { usePathname } from "next/navigation";
 
@@ -9,6 +9,13 @@ export default function Header() {
   const pathname = usePathname();
   const storeContext = useContext(StoreContext);
   const hideHeaderPaths = ["/login", "/register", "/"];
+
+  useEffect(() => {
+    if (hideHeaderPaths.some((path) => path === pathname)) {
+      return;
+    }
+    storeContext.getStoreData();
+  }, [pathname]);
 
   return storeContext.store &&
     hideHeaderPaths.every((path) => path !== pathname) ? (

@@ -1,23 +1,22 @@
 "use client";
 
 import { useAuthRedirect } from "@/utils/isAuthenticated";
-import { Fragment, useContext, useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import APICaller from "@/utils/APICaller";
 import { Menu } from "@prisma/client";
-import { StoreContext } from "../contexts/StoreContext";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const storeContext = useContext(StoreContext);
   const isAuth = useAuthRedirect();
   const [menus, setMenus] = useState<Menu[]>([]);
   useEffect(() => {
-    storeContext.getStoreData();
     getMenus();
   }, []);
+  const router = useRouter();
 
   async function getMenus() {
     try {
-      const response = await APICaller("/api/menu", "GET", {});
+      const response = await APICaller("/api/menus", "GET", {});
       setMenus(response.menus);
     } catch (error) {
       console.error("Erro ao buscar os menus:", error);
@@ -29,9 +28,15 @@ export default function Home() {
       <div className="flex flex-col gap-4">
         <span className="font-semibold">Cardápios:</span>
         {menus.map((menu, i) => (
-          <div key={i} className="bg-white rounded-lg shadow-lg p-4">
+          <button
+            key={i}
+            className="bg-white rounded-lg shadow-lg p-4"
+            onClick={() => {
+              router.push(`/menus/${menu.id}`);
+            }}
+          >
             {menu.id}
-          </div>
+          </button>
         ))}
       </div>
     </div>
