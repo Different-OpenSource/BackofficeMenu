@@ -8,12 +8,17 @@ export async function GET(request: NextRequest, response: NextResponse) {
     const url = new URL(request.url);
     const searchParams = new URLSearchParams(url.searchParams);
     const id = searchParams.get("menuId");
+    if (!id) {
+      return NextResponse.json(
+        { error: "menuId is required" },
+        { status: 400 }
+      );
+    }
     const categories = await prisma.category.findMany({
       where: { menuId: id },
     });
     return NextResponse.json({ categories }, { status: 200 });
   } catch (error: any) {
-    console.log(error);
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
 }

@@ -1,4 +1,5 @@
 "use client";
+import DeleteIcon from "@/assets/DeleteIcon";
 import styles from "./styles.module.css";
 import Button from "@/components/Button";
 import Modal from "@/components/Modal";
@@ -7,6 +8,10 @@ import APICaller from "@/utils/APICaller";
 import { useAuthRedirect } from "@/utils/isAuthenticated";
 import { Category } from "@prisma/client";
 import { Fragment, useEffect, useState } from "react";
+import PencilIcon from "@/assets/PencilIcon";
+import DeleteEditCategories from "./DeleteEditCategoriesModal";
+import DeleteEditCategoriesModal from "./DeleteEditCategoriesModal";
+import CreateCategoryModal from "./CreateCategoryModal";
 
 interface MenuItemParams {
   menuId: string;
@@ -15,7 +20,7 @@ export default function MenuItem({ params }: { params: MenuItemParams }) {
   const isAuth = useAuthRedirect();
   const [categories, setCategories] = useState<Category[]>([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [newCategoryName, setNewCategoryName] = useState("");
+  const [editCategory, setEditCategory] = useState<boolean>(false);
 
   async function getCategories() {
     try {
@@ -34,28 +39,18 @@ export default function MenuItem({ params }: { params: MenuItemParams }) {
     getCategories();
   }, []);
 
-  async function createCategory() {
-    if (!newCategoryName) {
-      return;
-    }
-    try {
-      const requestData = { name: newCategoryName, menuId: params.menuId };
-      const response = await APICaller("/api/category", "POST", requestData);
-      if (response.success) {
-        getCategories();
-        setIsOpen(false);
-        setNewCategoryName("");
-      }
-      response.error && console.error(response.error);
-    } catch (error) {
-      console.error("Erro ao criar categoria:", error);
-    }
-  }
   return isAuth ? (
     <div className="w-full h-full flex justify-center p-4">
       <div className="flex flex-col gap-4 overflow-x-hidden">
         <span className="font-semibold text-center">
           Cardápio: {params.menuId}
+          <Button
+            onClick={() => {
+              setEditCategory(true);
+            }}
+            style="outline"
+            text="Editar/  Excluir categorias"
+          ></Button>
         </span>
         <div className="flex gap-2 overflow-x-auto scrollbar-thumb-rounded-full  scrollbar-thumb-slate-700 scrollbar-track-transparent scrollbar-thin py-2 ">
           {categories.map((category, i) => (
@@ -82,28 +77,18 @@ export default function MenuItem({ params }: { params: MenuItemParams }) {
           </button>
         </div>
       </div>
-      <Modal
+      <CreateCategoryModal
         isOpen={isOpen}
-        onClose={() => {
-          setIsOpen(false);
-        }}
-      >
-        <div className="flex flex-col gap-4">
-          <span className="font-semibold text-xl text-center">
-            Criar nova categoria
-          </span>
-          <TextInput
-            label="Nome da categoria"
-            placeholder="Sobremesas"
-            setValue={setNewCategoryName}
-            value={newCategoryName}
-            type="text"
-          />
-          <div className="self-end w-1/2">
-            <Button onClick={createCategory} style="primary" text="Criar" />
-          </div>
-        </div>
-      </Modal>
+        onClose={() => setIsOpen(false)}
+        updateCategories={() => getCategories()}
+        menuId={params.menuId}
+      />
+      <DeleteEditCategoriesModal
+        isOpen={editCategory}
+        onClose={() => setEditCategory(false)}
+        categories={categories}
+        updateCategories={() => getCategories()}
+      />
     </div>
   ) : (
     <Fragment />
