@@ -83,7 +83,7 @@ export default function DeleteEditCategoriesModal({
       />
       <ConfirmDecisionModal
         title="Excluir categoria"
-        message="Tem certeza que deseja excluir essa categoria?"
+        message="Tem certeza que deseja excluir esta categoria?"
         isOpen={isOpenConfirmDelete}
         onClose={() => setIsOpenConfirmDelete(false)}
         onConfirm={() => deleteCategory()}
@@ -92,6 +92,3 @@ export default function DeleteEditCategoriesModal({
     </Fragment>
   );
 }
-
-// em geral consegui entender a aplicação eu acho, deu pra pegar uma ideia com a apresentação, o único ponto que me deixou com dúvida
-// foi a troca de vue pra angular que não imagino como possa ser feito,
