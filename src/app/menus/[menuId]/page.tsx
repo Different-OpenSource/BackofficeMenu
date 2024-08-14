@@ -13,6 +13,9 @@ interface MenuItemParams {
 }
 export default function MenuItem({ params }: { params: MenuItemParams }) {
   const isAuth = useAuthRedirect();
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
+    null
+  );
   const [categories, setCategories] = useState<Category[]>([]);
   const [editCategory, setEditCategory] = useState<boolean>(false);
 
@@ -42,15 +45,17 @@ export default function MenuItem({ params }: { params: MenuItemParams }) {
               setEditCategory(true);
             }}
             style="outline"
-            text="Editar/  Excluir categorias"
+            text="Editar/ Excluir categorias"
           ></Button>
         </span>
         <CategoriesList
           categories={categories}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={(category) => setSelectedCategory(category)}
           getCategories={() => getCategories()}
           menuId={params.menuId}
         />
-        <ItemList menuId={params.menuId} />
+        {selectedCategory && <ItemList categoryId={selectedCategory?.id} />}
       </div>
       <DeleteEditCategoriesModal
         isOpen={editCategory}
