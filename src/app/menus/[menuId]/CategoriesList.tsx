@@ -32,7 +32,7 @@ export default function CategoriesList({
         {categories.map((category, i) => (
           <button
             key={i}
-            className={`bg-transparent rounded-full py-1 px-2 border max-h-[34px] ${
+            className={`bg-transparent rounded-md py-1 px-2 border max-h-[34px] ${
               selectedCategory?.id === category.id
                 ? "border-blue-800 text-blue-800"
                 : "border-primary text-primary"
@@ -46,7 +46,7 @@ export default function CategoriesList({
           </button>
         ))}
         <button
-          className="bg-primary rounded-full py-1 px-2 border text-white border-primary max-h-[34px]"
+          className="bg-primary rounded-md py-1 px-2 border text-white border-primary max-h-[34px]"
           onClick={() => {
             setIsOpen(true);
           }}

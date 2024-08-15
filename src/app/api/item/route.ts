@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
         name: reqBody.name,
         description: reqBody.description,
         shortDescription: reqBody.shortDescription,
-        image: reqBody.image,
+        image: reqBody.image ?? "",
         price: reqBody.price,
       },
     });

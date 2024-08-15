@@ -1,10 +1,12 @@
 import APICaller from "@/utils/APICaller";
 import { useEffect, useState } from "react";
-import mockItem from "../../../assets/mockItem.jpeg";
 import { Item } from "@prisma/client";
+import ItemCard from "./ItemCard";
+import CreateItemModal from "./itemModals/CreateItemModal";
+import Button from "@/components/Button";
 export default function ItemList({ categoryId }: { categoryId: string }) {
   const [items, setItems] = useState([]);
-
+  const [isOpenCreateItem, setIsOpenCreateItem] = useState(false);
   async function getItems() {
     try {
       const response = await APICaller(
@@ -22,26 +24,21 @@ export default function ItemList({ categoryId }: { categoryId: string }) {
   }, [categoryId]);
 
   return (
-    <div className="self-center">
-      {items.map((item: Item) => {
-        return (
-          <div
-            key={item.id}
-            className="rounded shadow-md bg-white p-4 flex gap-4 w-96"
-          >
-            <div className="w-24 h-24 rounded-sm overflow-hidden">
-              <img className="h-full w-full" src={mockItem.src}></img>
-            </div>
-            <div className="flex flex-col flex-1 justify-between">
-              <div>
-                <div className="font-semibold">{item.name}</div>
-                <div className="text-gray-400">{item.shortDescription}</div>
-              </div>
-              <div className="text-end">R$ {item.price.toString()}</div>
-            </div>
-          </div>
-        );
-      })}
+    <div className="self-center flex flex-col gap-4">
+      {items.map((item: Item) => (
+        <ItemCard item={item} />
+      ))}
+      <Button
+        style="outline"
+        onClick={() => setIsOpenCreateItem(true)}
+        text="Adicionar Item"
+      ></Button>
+      <CreateItemModal
+        categoryId={categoryId}
+        isOpen={isOpenCreateItem}
+        onClose={() => setIsOpenCreateItem(false)}
+        updateItems={() => getItems()}
+      />
     </div>
   );
 }
