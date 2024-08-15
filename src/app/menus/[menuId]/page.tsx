@@ -4,7 +4,7 @@ import APICaller from "@/utils/APICaller";
 import { useAuthRedirect } from "@/utils/isAuthenticated";
 import { Category } from "@prisma/client";
 import { Fragment, useEffect, useState } from "react";
-import DeleteEditCategoriesModal from "./DeleteEditCategoriesModal";
+import DeleteEditCategoriesModal from "./categoriesModals/DeleteEditCategoriesModal";
 import CategoriesList from "./CategoriesList";
 import ItemList from "./ItemList";
 

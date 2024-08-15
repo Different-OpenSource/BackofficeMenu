@@ -1,7 +1,7 @@
 "use client";
 import { Category } from "@prisma/client";
 import { Fragment, useState } from "react";
-import CreateCategoryModal from "./CreateCategoryModal";
+import CreateCategoryModal from "./categoriesModals/CreateCategoryModal";
 
 export default function CategoriesList({
   categories,
