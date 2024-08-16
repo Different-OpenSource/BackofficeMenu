@@ -20,7 +20,6 @@ export default function DeleteEditCategoriesModal({
   onClose: () => void;
   updateCategories: () => void;
 }) {
-  const [isOpenEdit, setIsOpenEdit] = useState<boolean>(false);
   const [isOpenConfirmDelete, setIsOpenConfirmDelete] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(
     null
@@ -61,12 +60,7 @@ export default function DeleteEditCategoriesModal({
                   >
                     <DeleteIcon className="text-red-600 cursor-pointer" />
                   </button>
-                  <button
-                    onClick={() => {
-                      setSelectedCategory(category);
-                      setIsOpenEdit(true);
-                    }}
-                  >
+                  <button onClick={() => setSelectedCategory(category)}>
                     <PencilIcon />
                   </button>
                 </div>
@@ -75,12 +69,14 @@ export default function DeleteEditCategoriesModal({
           </div>
         </div>
       </Modal>
-      <EditCategoryNameModal
-        category={selectedCategory!}
-        isOpen={isOpenEdit}
-        onClose={() => setIsOpenEdit(false)}
-        updateCategories={updateCategories}
-      />
+      {selectedCategory && (
+        <EditCategoryNameModal
+          category={selectedCategory}
+          isOpen={selectedCategory !== null}
+          onClose={() => setSelectedCategory(null)}
+          updateCategories={updateCategories}
+        />
+      )}
       <ConfirmDecisionModal
         title="Excluir categoria"
         message="Tem certeza que deseja excluir esta categoria?"

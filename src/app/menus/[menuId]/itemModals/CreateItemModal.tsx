@@ -59,7 +59,7 @@ export default function CreateItemModal({
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className="flex flex-col gap-4">
         <span className="font-semibold text-xl text-center">
-          Criar nova categoria
+          Criar novo item
         </span>
         <TextInput
           label="Nome"

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { NumericFormat } from "react-number-format";
+import React from "react";
+import { NumericFormat, } from "react-number-format";
 
 interface NumberInputProps {
   value: number;

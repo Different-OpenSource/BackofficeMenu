@@ -4,8 +4,11 @@ import { Item } from "@prisma/client";
 import ItemCard from "./ItemCard";
 import CreateItemModal from "./itemModals/CreateItemModal";
 import Button from "@/components/Button";
+import EditItemModal from "./itemModals/EditItemModal";
+
 export default function ItemList({ categoryId }: { categoryId: string }) {
   const [items, setItems] = useState([]);
+  const [selectedItem, setSelectedItem] = useState<Item | null>(null);
   const [isOpenCreateItem, setIsOpenCreateItem] = useState(false);
   async function getItems() {
     try {
@@ -26,7 +29,12 @@ export default function ItemList({ categoryId }: { categoryId: string }) {
   return (
     <div className="self-center flex flex-col gap-4">
       {items.map((item: Item) => (
-        <ItemCard item={item} />
+        <ItemCard
+          item={item}
+          onClick={() => {
+            setSelectedItem(item);
+          }}
+        />
       ))}
       <Button
         style="outline"
@@ -39,6 +47,14 @@ export default function ItemList({ categoryId }: { categoryId: string }) {
         onClose={() => setIsOpenCreateItem(false)}
         updateItems={() => getItems()}
       />
+      {selectedItem && (
+        <EditItemModal
+          item={selectedItem}
+          isOpen={selectedItem !== null}
+          onClose={() => setSelectedItem(null)}
+          updateItems={() => getItems()}
+        />
+      )}
     </div>
   );
 }
