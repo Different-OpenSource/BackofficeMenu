@@ -1,12 +1,12 @@
 "use client";
-import Button from "@/components/Button";
 import APICaller from "@/utils/APICaller";
 import { useAuthRedirect } from "@/utils/isAuthenticated";
 import { Category } from "@prisma/client";
 import { Fragment, useEffect, useState } from "react";
-import DeleteEditCategoriesModal from "./categoriesModals/DeleteEditCategoriesModal";
 import CategoriesList from "./CategoriesList";
 import ItemList from "./ItemList";
+import CategoriesLines from "./CategoriesLines";
+import Button from "@/components/Button";
 
 interface MenuItemParams {
   menuId: string;
@@ -17,7 +17,8 @@ export default function MenuItem({ params }: { params: MenuItemParams }) {
     null
   );
   const [categories, setCategories] = useState<Category[]>([]);
-  const [editCategory, setEditCategory] = useState<boolean>(false);
+  const [isOpenCategoriesLines, setisOpenCategoriesLines] =
+    useState<boolean>(false);
 
   async function getCategories() {
     try {
@@ -36,17 +37,24 @@ export default function MenuItem({ params }: { params: MenuItemParams }) {
   }, []);
 
   return isAuth ? (
-    <div className="w-full h-full flex justify-center p-4">
-      <div className="flex flex-col gap-4 overflow-x-hidden">
+    <div className="w-full h-full flex relative">
+      <div className=" absolute left-0 top-0 h-full border-blue-800 border-l p-4 flex flex-col gap-4">
+        <div className="w-64">
+          <Button
+            style="outline"
+            text="Editar/Excluir Categorias"
+            onClick={() => setisOpenCategoriesLines(!isOpenCategoriesLines)}
+          ></Button>
+        </div>
+        <CategoriesLines
+          isOpen={isOpenCategoriesLines}
+          categories={categories}
+          updateCategories={getCategories}
+        />
+      </div>
+      <div className="flex flex-col gap-4 overflow-x-hidden flex-1 items-center">
         <span className="font-semibold text-center">
           Cardápio: {params.menuId}
-          <Button
-            onClick={() => {
-              setEditCategory(true);
-            }}
-            style="outline"
-            text="Editar/ Excluir categorias"
-          ></Button>
         </span>
         <CategoriesList
           categories={categories}
@@ -57,12 +65,6 @@ export default function MenuItem({ params }: { params: MenuItemParams }) {
         />
         {selectedCategory && <ItemList categoryId={selectedCategory?.id} />}
       </div>
-      <DeleteEditCategoriesModal
-        isOpen={editCategory}
-        onClose={() => setEditCategory(false)}
-        categories={categories}
-        updateCategories={() => getCategories()}
-      />
     </div>
   ) : (
     <Fragment />
