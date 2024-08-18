@@ -19,6 +19,7 @@ export default function CreateItemModal({
   onClose: () => void;
   updateItems: () => void;
 }) {
+  const [internalDescription, setInternalDescription] = useState("");
   const [description, setDescription] = useState("");
   const [shortDescription, setShortDescription] = useState("");
   const [price, setPrice] = useState(0);
@@ -43,6 +44,7 @@ export default function CreateItemModal({
         price,
         shortDescription,
         name,
+        internalDescription,
       };
       const response = await APICaller("/api/item", "POST", requestData);
       if (response.success) {
@@ -80,6 +82,13 @@ export default function CreateItemModal({
           placeholder="Costelinha suína com barbecue"
           setValue={setShortDescription}
           value={shortDescription}
+          type="text"
+        />
+        <TextInput
+          label="Descrição Interna"
+          placeholder="Servir apenas nas quartas-feiras"
+          setValue={setInternalDescription}
+          value={internalDescription}
           type="text"
         />
         <NumberInput

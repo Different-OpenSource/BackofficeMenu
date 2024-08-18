@@ -61,7 +61,7 @@ export default function Home() {
         ))}
       </div>
       <AddMenuModal
-        storeId={storeContext.store!.id}
+        storeId={storeContext.store?.id ?? ""}
         isOpen={isOpenAddMenu}
         onClose={() => setIsOpenAddMenu(false)}
         updateMenus={getMenus}

@@ -55,16 +55,17 @@ model CategoryItem {
   id         String   @id @default(uuid())
   categoryId String
   itemId     String
-  Category   Category @relation(fields: [categoryId], references: [id])
-  Item       Item     @relation(fields: [itemId], references: [id])
+  Category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  Item       Item     @relation(fields: [itemId], references: [id], onDelete: Cascade)
 }
 
 model Item {
-  id               String         @id @default(uuid())
-  name             String
-  description      String
-  price            Decimal        @db.Decimal(8, 2)
-  image            String
-  shortDescription String
-  categoryItems    CategoryItem[]
+  id                  String         @id @default(uuid())
+  name                String
+  description         String
+  price               Decimal        @db.Decimal(8, 2)
+  image               String
+  shortDescription    String
+  internalDescription String?
+  categoryItems       CategoryItem[]
 }

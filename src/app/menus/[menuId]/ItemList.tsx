@@ -16,7 +16,7 @@ export default function ItemList({ categoryId }: { categoryId: string }) {
         `/api/items?categoryId=${categoryId}`,
         "GET"
       );
-      setItems(response.items);
+      setItems(response.allItems);
     } catch (error) {
       console.error("Erro ao buscar os itens:", error);
     }
@@ -28,14 +28,15 @@ export default function ItemList({ categoryId }: { categoryId: string }) {
 
   return (
     <div className="self-center flex flex-col gap-4">
-      {items.map((item: Item) => (
-        <ItemCard
-          item={item}
-          onClick={() => {
-            setSelectedItem(item);
-          }}
-        />
-      ))}
+      {items &&
+        items.map((item: Item) => (
+          <ItemCard
+            item={item}
+            onClick={() => {
+              setSelectedItem(item);
+            }}
+          />
+        ))}
       <Button
         style="outline"
         onClick={() => setIsOpenCreateItem(true)}

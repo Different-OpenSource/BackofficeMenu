@@ -6,17 +6,25 @@ export async function POST(request: NextRequest) {
   try {
     await getDataToken(request);
     const reqBody = await request.json();
-
-    await prisma.item.create({
+    const item = await prisma.item.create({
       data: {
-        categoryId: reqBody.categoryId,
         name: reqBody.name,
         description: reqBody.description,
         shortDescription: reqBody.shortDescription,
         image: reqBody.image ?? "",
         price: reqBody.price,
+        internalDescription: reqBody.internalDescription || null,
       },
     });
+
+    if (reqBody.categoryId) {
+      await prisma.categoryItem.create({
+        data: {
+          categoryId: reqBody.categoryId,
+          itemId: item.id,
+        },
+      });
+    }
 
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error: any) {
@@ -40,6 +48,7 @@ export async function PATCH(request: NextRequest) {
         shortDescription: reqBody.shortDescription,
         image: reqBody.image ?? "",
         price: reqBody.price,
+        internalDescription: reqBody.internalDescription || null,
       },
     });
 

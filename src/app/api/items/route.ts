@@ -14,10 +14,23 @@ export async function GET(request: NextRequest, response: NextResponse) {
         { status: 400 }
       );
     }
-    const items = await prisma.item.findMany({
-      where: { categoryId: id },
+
+    const items = await prisma.category.findUnique({
+      where: {
+        id: id,
+      },
+      include: {
+        categoryItems: {
+          include: {
+            Item: true,
+          },
+        },
+      },
     });
-    return NextResponse.json({ items }, { status: 200 });
+
+    const allItems = items?.categoryItems.map((ci) => ci.Item);
+
+    return NextResponse.json({ allItems }, { status: 200 });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
