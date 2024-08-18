@@ -25,7 +25,7 @@ model User {
 
 model Menu {
   id         String     @id @default(uuid())
-  name       String     
+  name       String
   categories Category[]
   store      Store      @relation("StoreMenus", fields: [storeId], references: [id])
   storeId    String
@@ -48,6 +48,7 @@ model Category {
   categoryItems CategoryItem[]
   Menu          Menu           @relation(fields: [menuId], references: [id])
   menuId        String
+  name          String
 }
 
 model CategoryItem {

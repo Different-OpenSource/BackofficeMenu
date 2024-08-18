@@ -1,10 +1,11 @@
 "use client";
 
 import { useAuthRedirect } from "@/utils/isAuthenticated";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import APICaller from "@/utils/APICaller";
 import { Menu } from "@prisma/client";
-import { useRouter } from "next/navigation";
+import MenuConfigButtons from "./MenuConfigButtons";
+import { StoreContext } from "../contexts/StoreContext";
 
 export default function Home() {
   const isAuth = useAuthRedirect();
@@ -12,7 +13,7 @@ export default function Home() {
   useEffect(() => {
     getMenus();
   }, []);
-  const router = useRouter();
+  const storeContext = useContext(StoreContext);
 
   async function getMenus() {
     try {
@@ -23,20 +24,30 @@ export default function Home() {
     }
   }
 
+  function isMenuActive(menu: Menu) {
+    return storeContext.store?.activeMenuId === menu.id;
+  }
+
   return isAuth ? (
     <div className="w-full h-full flex justify-center p-4">
       <div className="flex flex-col gap-4">
         <span className="font-semibold">Cardápios:</span>
-        {menus.map((menu, i) => (
-          <button
-            key={i}
-            className="bg-white rounded-lg shadow-lg p-4"
-            onClick={() => {
-              router.push(`/menus/${menu.id}`);
-            }}
+        {menus.map((menu) => (
+          <div
+            key={menu.id}
+            className={
+              "bg-white rounded-lg shadow-lg p-4 flex justify-between items-center gap-10 border-2 " +
+              (isMenuActive(menu) ? " border-primary" : " border-white")
+            }
           >
-            {menu.id}
-          </button>
+            <span>{menu.name}</span>
+            <MenuConfigButtons
+              menu={menu}
+              updateMenus={getMenus}
+              updateStore={() => storeContext.getStoreData()}
+              isActive={isMenuActive(menu)}
+            />
+          </div>
         ))}
       </div>
     </div>
