@@ -25,35 +25,45 @@ model User {
 
 model Menu {
   id         String     @id @default(uuid())
+  name       String     
   categories Category[]
-  store      Store      @relation(fields: [storeId], references: [id])
+  store      Store      @relation("StoreMenus", fields: [storeId], references: [id])
   storeId    String
+  activeFor  Store?     @relation("ActiveMenu")
 }
 
 model Store {
-  id          String @id @default(uuid())
-  image       String
-  name        String
-  description String
-  User        User[]
-  Menu        Menu[]
+  id           String  @id @default(uuid())
+  image        String
+  name         String
+  description  String
+  User         User[]
+  menus        Menu[]  @relation("StoreMenus")
+  activeMenu   Menu?   @relation("ActiveMenu", fields: [activeMenuId], references: [id])
+  activeMenuId String? @unique
 }
 
 model Category {
-  id     String @id @default(uuid())
-  name   String
-  items  Item[]
-  Menu   Menu   @relation(fields: [menuId], references: [id])
-  menuId String
+  id            String         @id @default(uuid())
+  categoryItems CategoryItem[]
+  Menu          Menu           @relation(fields: [menuId], references: [id])
+  menuId        String
+}
+
+model CategoryItem {
+  id         String   @id @default(uuid())
+  categoryId String
+  itemId     String
+  Category   Category @relation(fields: [categoryId], references: [id])
+  Item       Item     @relation(fields: [itemId], references: [id])
 }
 
 model Item {
-  id               String   @id @default(uuid())
+  id               String         @id @default(uuid())
   name             String
   description      String
-  price            Decimal  @db.Decimal(8, 2)
+  price            Decimal        @db.Decimal(8, 2)
   image            String
   shortDescription String
-  Category         Category @relation(fields: [categoryId], references: [id])
-  categoryId       String
+  categoryItems    CategoryItem[]
 }
