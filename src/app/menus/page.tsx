@@ -6,10 +6,13 @@ import APICaller from "@/utils/APICaller";
 import { Menu } from "@prisma/client";
 import MenuConfigButtons from "./MenuConfigButtons";
 import { StoreContext } from "../contexts/StoreContext";
+import Button from "@/components/Button";
+import AddMenuModal from "./AddMenuModal";
 
 export default function Home() {
   const isAuth = useAuthRedirect();
   const [menus, setMenus] = useState<Menu[]>([]);
+  const [isOpenAddMenu, setIsOpenAddMenu] = useState(false);
   useEffect(() => {
     getMenus();
   }, []);
@@ -31,7 +34,14 @@ export default function Home() {
   return isAuth ? (
     <div className="w-full h-full flex justify-center p-4">
       <div className="flex flex-col gap-4">
-        <span className="font-semibold">Cardápios:</span>
+        <div className="flex justify-between items-center gap-20">
+          <span className="font-semibold">Cardápios</span>
+          <Button
+            text="Adicionar Cardápio"
+            onClick={() => setIsOpenAddMenu(true)}
+            style="outline"
+          ></Button>
+        </div>
         {menus.map((menu) => (
           <div
             key={menu.id}
@@ -50,6 +60,12 @@ export default function Home() {
           </div>
         ))}
       </div>
+      <AddMenuModal
+        storeId={storeContext.store!.id}
+        isOpen={isOpenAddMenu}
+        onClose={() => setIsOpenAddMenu(false)}
+        updateMenus={getMenus}
+      />
     </div>
   ) : (
     <Fragment />
