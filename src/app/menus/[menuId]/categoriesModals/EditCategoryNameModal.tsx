@@ -4,7 +4,7 @@ import Modal from "@/components/Modal";
 import TextInput from "@/components/TextInput";
 import APICaller from "@/utils/APICaller";
 import { Category } from "@prisma/client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 export default function EditCategoryNameModal({
@@ -18,7 +18,11 @@ export default function EditCategoryNameModal({
   onClose: () => void;
   updateCategories: () => void;
 }) {
-  const [newCategoryName, setNewCategoryName] = useState("");
+  const [newCategoryName, setNewCategoryName] = useState(category.name);
+
+  useEffect(() => {
+    setNewCategoryName(category.name);
+  }, [category]);
 
   async function editCategory() {
     try {

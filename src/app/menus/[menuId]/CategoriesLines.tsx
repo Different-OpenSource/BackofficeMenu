@@ -55,7 +55,12 @@ export default function CategoriesLines({
                 >
                   <DeleteIcon className="text-red-600 cursor-pointer" />
                 </button>
-                <button onClick={() => setSelectedCategory(category)}>
+                <button
+                  onClick={() => {
+                    setSelectedCategory(category);
+                    setIsOpenEditCategory(true);
+                  }}
+                >
                   <PencilIcon />
                 </button>
               </div>
@@ -68,7 +73,7 @@ export default function CategoriesLines({
           <EditCategoryNameModal
             category={selectedCategory}
             isOpen={isOpenEditCategory}
-            onClose={() => setIsOpenEditCategory(true)}
+            onClose={() => setIsOpenEditCategory(false)}
             updateCategories={updateCategories}
           />
           <ConfirmDecisionModal
