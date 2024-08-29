@@ -30,6 +30,7 @@ export default function CreateItemModal({
     setShortDescription("");
     setPrice(0);
     setName("");
+    setInternalDescription("");
   }
 
   async function createItem() {
