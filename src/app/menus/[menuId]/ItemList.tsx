@@ -5,11 +5,16 @@ import ItemCard from "./ItemCard";
 import CreateItemModal from "./itemModals/CreateItemModal";
 import Button from "@/components/Button";
 import EditItemModal from "./itemModals/EditItemModal";
+import ConfirmDecisionModal from "@/components/ConfirmDecisionModal";
+import toast from "react-hot-toast";
 
 export default function ItemList({ categoryId }: { categoryId: string }) {
   const [items, setItems] = useState([]);
-  const [selectedItem, setSelectedItem] = useState<Item | null>(null);
   const [isOpenCreateItem, setIsOpenCreateItem] = useState(false);
+  const [selectedItemEdit, setSelectedItemEdit] = useState<Item | null>(null);
+  const [selectedItemDelete, setSelectedItemDelete] = useState<Item | null>(
+    null
+  );
   async function getItems() {
     try {
       const response = await APICaller(
@@ -26,15 +31,26 @@ export default function ItemList({ categoryId }: { categoryId: string }) {
     getItems();
   }, [categoryId]);
 
+  async function deleteItem(item: Item) {
+    try {
+      const response = await APICaller(`/api/item?itemId=${item.id}`, "DELETE");
+      if (response.success) {
+        getItems();
+        toast.success("Item excluído com sucesso!");
+      }
+    } catch (error) {
+      console.error("Erro ao deletar item:", error);
+    }
+  }
+
   return (
     <div className="self-center flex flex-col gap-4">
       {items &&
         items.map((item: Item) => (
           <ItemCard
             item={item}
-            onClick={() => {
-              setSelectedItem(item);
-            }}
+            onEdit={() => setSelectedItemEdit(item)}
+            onDelete={() => setSelectedItemDelete(item)}
           />
         ))}
       <Button
@@ -48,12 +64,22 @@ export default function ItemList({ categoryId }: { categoryId: string }) {
         onClose={() => setIsOpenCreateItem(false)}
         updateItems={() => getItems()}
       />
-      {selectedItem && (
+      {selectedItemEdit && (
         <EditItemModal
-          item={selectedItem}
-          isOpen={selectedItem !== null}
-          onClose={() => setSelectedItem(null)}
+          item={selectedItemEdit}
+          isOpen={selectedItemEdit !== null}
+          onClose={() => setSelectedItemEdit(null)}
           updateItems={() => getItems()}
+        />
+      )}
+      {selectedItemDelete && (
+        <ConfirmDecisionModal
+          isOpen={selectedItemDelete !== null}
+          onClose={() => setSelectedItemDelete(null)}
+          title="Excluir item"
+          message="Tem certeza que deseja excluir o item"
+          onConfirm={() => deleteItem(selectedItemDelete)}
+          onDecline={() => {}}
         />
       )}
     </div>

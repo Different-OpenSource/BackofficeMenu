@@ -29,20 +29,6 @@ export default function EditItemModal({
   );
   const [price, setPrice] = useState(Number(item.price));
   const [name, setName] = useState(item.name);
-  const [isOpenConfirmDelete, setIsOpenConfirmDelete] = useState(false);
-
-  async function deleteItem() {
-    try {
-      const response = await APICaller(`/api/item?itemId=${item.id}`, "DELETE");
-      if (response.success) {
-        updateItems();
-        onClose();
-        toast.success("Item excluído com sucesso!");
-      }
-    } catch (error) {
-      console.error("Erro ao deletar item:", error);
-    }
-  }
 
   async function editItem() {
     if (!name || !description || !shortDescription || !price) {
@@ -111,11 +97,6 @@ export default function EditItemModal({
           />
           <div className="flex gap-2">
             <Button
-              onClick={() => setIsOpenConfirmDelete(true)}
-              style="danger"
-              text="Excluir Item"
-            />
-            <Button
               onClick={editItem}
               style="primary"
               text="Salvar alterações"
@@ -123,14 +104,6 @@ export default function EditItemModal({
           </div>
         </div>
       </Modal>
-      <ConfirmDecisionModal
-        isOpen={isOpenConfirmDelete}
-        onClose={() => setIsOpenConfirmDelete(false)}
-        title="Excluir item"
-        message="Tem certeza que deseja excluir o item"
-        onConfirm={deleteItem}
-        onDecline={() => {}}
-      />
     </Fragment>
   );
 }
