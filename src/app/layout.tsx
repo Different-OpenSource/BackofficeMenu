@@ -23,7 +23,7 @@ export default function RootLayout({
         <div id="portal-root"></div>
         <Toaster position="top-center" />
         <StoreContextProvider>
-          <div className="w-dvw h-dvh flex flex-col">
+          <div className="min-w-screen min-h-screen flex flex-col overflow-x-hidden">
             <Header />
             {children}
           </div>

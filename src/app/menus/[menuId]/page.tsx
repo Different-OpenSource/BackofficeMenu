@@ -52,7 +52,7 @@ export default function MenuItem({ params }: { params: MenuItemParams }) {
           updateCategories={getCategories}
         />
       </div>
-      <div className="flex flex-col gap-4 overflow-x-hidden flex-1 items-center">
+      <div className="flex flex-col gap-4 overflow-hidden flex-1 items-center">
         <span className="font-semibold text-center">
           Cardápio: {params.menuId}
         </span>

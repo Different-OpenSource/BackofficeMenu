@@ -29,9 +29,9 @@ export default function ItemCard({
               <span>{item.name}</span>
               <DropdownContextMenu
                 options={[
-                  { label: "Excluir Item", onClick: () => onDelete() },
                   { label: "Editar Item", onClick: () => onEdit() },
                   { label: "Selecionar Menus", onClick: () => {} },
+                  { label: "Excluir Item", onClick: () => onDelete() },
                 ]}
               >
                 <ThreeDotsIcon />

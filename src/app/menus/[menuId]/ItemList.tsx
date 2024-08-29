@@ -44,7 +44,7 @@ export default function ItemList({ categoryId }: { categoryId: string }) {
   }
 
   return (
-    <div className="self-center flex flex-col gap-4">
+    <div className="self-center flex flex-col gap-4 mb-4">
       {items &&
         items.map((item: Item) => (
           <ItemCard

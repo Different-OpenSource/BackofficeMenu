@@ -28,11 +28,11 @@ export default function CategoriesList({
   }
   return (
     <Fragment>
-      <div className="flex gap-2 overflow-x-auto scrollbar-thumb-rounded-full  scrollbar-thumb-slate-700 scrollbar-track-transparent scrollbar-thin py-2 ">
+      <div className="flex gap-2 overflow-x-auto overflow-y-hidden scrollbar-thumb-rounded-full  scrollbar-thumb-slate-700 scrollbar-track-transparent scrollbar-thin">
         {categories.map((category, i) => (
           <button
             key={i}
-            className={`bg-transparent rounded-md py-1 px-2 border max-h-[34px] ${
+            className={`bg-transparent rounded-md px-2 border h-[34px] ${
               selectedCategory?.id === category.id
                 ? "border-blue-800 text-blue-800"
                 : "border-primary text-primary"
@@ -46,7 +46,7 @@ export default function CategoriesList({
           </button>
         ))}
         <button
-          className="bg-primary rounded-md py-1 px-2 border text-white border-primary max-h-[34px]"
+          className="bg-primary rounded-md py-1 px-2 border text-white border-primary h-[34px]"
           onClick={() => {
             setIsOpen(true);
           }}
