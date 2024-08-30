@@ -63,7 +63,9 @@ export default function MenuItem({ params }: { params: MenuItemParams }) {
           getCategories={() => getCategories()}
           menuId={params.menuId}
         />
-        {selectedCategory && <ItemList categoryId={selectedCategory?.id} />}
+        {selectedCategory && (
+          <ItemList menuId={params.menuId} categoryId={selectedCategory?.id} />
+        )}
       </div>
     </div>
   ) : (

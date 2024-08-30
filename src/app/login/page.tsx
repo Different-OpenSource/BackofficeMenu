@@ -34,7 +34,7 @@ export default function Login() {
   }
 
   return (
-    <div className="flex w-full h-full justify-center items-center">
+    <div className="flex w-full h-full justify-center items-center flex-1">
       <div className="flex flex-col w-96 shadow-xl p-10 rounded-lg gap-2">
         <TextInput
           setValue={setEmail}

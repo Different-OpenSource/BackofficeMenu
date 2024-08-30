@@ -7,14 +7,24 @@ import Button from "@/components/Button";
 import EditItemModal from "./itemModals/EditItemModal";
 import ConfirmDecisionModal from "@/components/ConfirmDecisionModal";
 import toast from "react-hot-toast";
+import SelectMenusModal from "./itemModals/SelectMenusModal";
 
-export default function ItemList({ categoryId }: { categoryId: string }) {
+export default function ItemList({
+  menuId,
+  categoryId,
+}: {
+  menuId: string;
+  categoryId: string;
+}) {
   const [items, setItems] = useState([]);
   const [isOpenCreateItem, setIsOpenCreateItem] = useState(false);
   const [selectedItemEdit, setSelectedItemEdit] = useState<Item | null>(null);
   const [selectedItemDelete, setSelectedItemDelete] = useState<Item | null>(
     null
   );
+  const [selectedItemSelectMenus, setSelectedItemSelectMenus] =
+    useState<Item | null>(null);
+
   async function getItems() {
     try {
       const response = await APICaller(
@@ -51,6 +61,7 @@ export default function ItemList({ categoryId }: { categoryId: string }) {
             item={item}
             onEdit={() => setSelectedItemEdit(item)}
             onDelete={() => setSelectedItemDelete(item)}
+            onSelectMenus={() => setSelectedItemSelectMenus(item)}
           />
         ))}
       <Button
@@ -80,6 +91,14 @@ export default function ItemList({ categoryId }: { categoryId: string }) {
           message="Tem certeza que deseja excluir o item"
           onConfirm={() => deleteItem(selectedItemDelete)}
           onDecline={() => {}}
+        />
+      )}
+      {selectedItemSelectMenus && (
+        <SelectMenusModal
+          isOpen={selectedItemSelectMenus !== null}
+          onClose={() => setSelectedItemSelectMenus(null)}
+          item={selectedItemSelectMenus}
+          menuId={menuId}
         />
       )}
     </div>
