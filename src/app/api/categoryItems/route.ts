@@ -29,26 +29,29 @@ export async function POST(request: NextRequest) {
     await getDataToken(request);
     const reqBody = await request.json();
 
-    const categoryItem = await prisma.categoryItem.findFirst({
-      where: {
-        categoryId: reqBody.categoryId,
-        itemId: reqBody.itemId,
-      },
-    });
+    const { categoriesIds, itemId } = reqBody;
 
-    if (categoryItem) {
+    if (!itemId) {
       return NextResponse.json(
-        { error: "categoryItem already exists" },
+        { error: "itemId is required" },
         { status: 400 }
       );
     }
 
-    await prisma.categoryItem.create({
-      data: {
-        categoryId: reqBody.categoryId,
-        itemId: reqBody.itemId,
+    await prisma.categoryItem.deleteMany({
+      where: {
+        itemId,
       },
     });
+
+    for (const categoryId of categoriesIds) {
+      await prisma.categoryItem.create({
+        data: {
+          categoryId,
+          itemId,
+        },
+      });
+    }
 
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error: any) {

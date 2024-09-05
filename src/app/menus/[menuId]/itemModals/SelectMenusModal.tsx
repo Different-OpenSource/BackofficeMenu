@@ -16,8 +16,8 @@ export default function SelectMenusModal({
   onClose: () => void;
 }) {
   const [allCategories, setAllCategories] = useState<Category[]>([]);
-  const [selectedCategories, setSelectedCategories] = useState<any[]>([]);
-  
+  const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
+
   async function getCategories() {
     try {
       const response = await APICaller(
@@ -49,34 +49,66 @@ export default function SelectMenusModal({
     getCategories().then(() => getSelectedCategories());
   }, []);
 
+  function handleSelectCategories(category: Category) {
+    const isCategorySelected = selectedCategories.some(
+      (selectedCategory) => selectedCategory.id === category.id
+    );
+
+    if (isCategorySelected) {
+      setSelectedCategories(
+        selectedCategories.filter(
+          (selectedCategory) => selectedCategory.id !== category.id
+        )
+      );
+      return;
+    }
+    setSelectedCategories([...selectedCategories, category]);
+  }
+
+  function saveChanges() {
+    const categoriesIds = selectedCategories.map(
+      (selectedCategory) => selectedCategory.id
+    );
+
+    const body = {
+      itemId: item.id,
+      categoriesIds,
+    };
+
+    APICaller("/api/categoryItems", "POST", body).then(() => onClose());
+  }
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal
+      isOpen={isOpen}
+      onClose={() => {
+        saveChanges();
+        onClose();
+      }}
+    >
       <div className="flex flex-col gap-4">
         <span className="font-semibold text-xl text-center">
           Selecionar Categorias
         </span>
         <div className="flex flex-col gap-4">
-          {selectedCategories.map((category) => (
-            <div className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                id={category.id}
-                name={category.name}
-                value={category.id}
-                defaultChecked
-              />
-              <label htmlFor={category.id}>{category.name}</label>
-            </div>
-          ))}
           {allCategories.map((category) => (
-            <div className="flex items-center gap-2">
+            <div
+              className="flex items-center gap-2"
+              onClick={() => handleSelectCategories(category)}
+            >
               <input
+                className="pointer-events-none w-6 h-6"
                 type="checkbox"
                 id={category.id}
                 name={category.name}
                 value={category.id}
+                checked={selectedCategories.some(
+                  (selectedCategory) => selectedCategory.id === category.id
+                )}
               />
-              <label htmlFor={category.id}>{category.name}</label>
+              <label className="pointer-events-none" htmlFor={category.id}>
+                {category.name}
+              </label>
             </div>
           ))}
         </div>
