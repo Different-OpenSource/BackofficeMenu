@@ -84,7 +84,7 @@ export default function MenuConfigButtons({
         onConfirm={() => {
           deleteMenu();
         }}
-        message="Tem certeza que deseja excluir este menu?"
+        message="Tem certeza que deseja excluir este cardápio?"
         title="Excluir menu"
         onDecline={() => {}}
       />

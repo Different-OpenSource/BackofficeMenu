@@ -21,7 +21,7 @@ export default function DropdownContextMenu({
         {isOptionsOpen && (
           <div
             className={
-              "absolute bg-white border-gray-400 border rounded-lg flex flex-col z-20 overflow-hidden whitespace-nowrap" +
+              "absolute bg-white border-gray-400 border rounded-lg flex flex-col z-20 overflow-hidden whitespace-nowrap -translate-x-3/4" +
               (isOptionsOpen ? "" : "hidden")
             }
           >
