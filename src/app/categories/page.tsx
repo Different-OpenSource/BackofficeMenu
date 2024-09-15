@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import APICaller from "@/utils/APICaller";
 import { Menu } from "@prisma/client";
 import { StoreContext } from "../contexts/StoreContext";
-import AddMenuModal from "../menus/AddMenuModal";
+import AddMenuModal from "@/components/menuModals/AddMenuModal";
 import ResponsiveGrid from "@/components/ResponsiveGrid";
 import { useRouter } from "next/navigation";
 

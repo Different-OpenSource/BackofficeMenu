@@ -6,7 +6,7 @@ import APICaller from "@/utils/APICaller";
 import { Menu } from "@prisma/client";
 import { useContext, useState } from "react";
 import toast from "react-hot-toast";
-import { StoreContext } from "../contexts/StoreContext";
+import { StoreContext } from "../../app/contexts/StoreContext";
 
 export default function EditMenuModal({
   menu,

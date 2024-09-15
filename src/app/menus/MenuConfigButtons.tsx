@@ -1,7 +1,7 @@
 import DeleteIcon from "@/assets/DeleteIcon";
 import PencilIcon from "@/assets/PencilIcon";
 import { Fragment, useState } from "react";
-import EditMenuModal from "./EditMenuModal";
+import EditMenuModal from "@/components/menuModals/EditMenuModal";
 import { Menu } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import ConfirmDecisionModal from "@/components/ConfirmDecisionModal";
@@ -61,7 +61,7 @@ export default function MenuConfigButtons({
         >
           Ativar
         </button>
-       
+
         <button onClick={() => setIsOpenEdit(true)}>
           <PencilIcon />
         </button>

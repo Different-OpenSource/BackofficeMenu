@@ -1,11 +1,11 @@
 "use client";
 
-import { Fragment, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import APICaller from "@/utils/APICaller";
 import { Menu } from "@prisma/client";
 import MenuConfigButtons from "./MenuConfigButtons";
 import { StoreContext } from "../contexts/StoreContext";
-import AddMenuModal from "./AddMenuModal";
+import AddMenuModal from "@/components/menuModals/AddMenuModal";
 import ResponsiveGrid from "@/components/ResponsiveGrid";
 
 export default function Home() {

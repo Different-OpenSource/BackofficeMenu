@@ -6,9 +6,9 @@ import ResponsiveGrid from "@/components/ResponsiveGrid";
 import PencilIcon from "@/assets/PencilIcon";
 import DeleteIcon from "@/assets/DeleteIcon";
 import ConfirmDecisionModal from "@/components/ConfirmDecisionModal";
-import EditCategoryNameModal from "./categoriesModals/EditCategoryNameModal";
+import EditCategoryNameModal from "@/components/categoriesModals/EditCategoryNameModal";
 import toast from "react-hot-toast";
-import CreateCategoryModal from "./categoriesModals/CreateCategoryModal";
+import CreateCategoryModal from "@/components/categoriesModals/CreateCategoryModal";
 import ChevronLeftIcon from "@/assets/ChevronLeftIcon";
 import { useRouter } from "next/navigation";
 

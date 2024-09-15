@@ -4,9 +4,9 @@ import { Fragment, useEffect, useState } from "react";
 import APICaller from "@/utils/APICaller";
 import { Item } from "@prisma/client";
 import ResponsiveGrid from "@/components/ResponsiveGrid";
-import SelectMenusModal from "./itemModals/SelectMenusModal";
+import SelectMenusModal from "@/components/itemModals/SelectMenusModal";
 import ConfirmDecisionModal from "@/components/ConfirmDecisionModal";
-import EditItemModal from "./itemModals/EditItemModal";
+import EditItemModal from "@/components/itemModals/EditItemModal";
 import toast from "react-hot-toast";
 import ItemCard from "./ItemCard";
 
