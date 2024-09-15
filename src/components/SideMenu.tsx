@@ -1,6 +1,5 @@
 "use client";
 
-import DeleteIcon from "@/assets/DeleteIcon";
 import { usePathname, useRouter } from "next/navigation";
 import { routes } from "@/utils/routes";
 
@@ -19,7 +18,7 @@ export default function SideMenu() {
             router.push(route.path);
           }}
         >
-          <DeleteIcon />
+          {route.icon}
           <span>{route.name}</span>
         </button>
       ))}

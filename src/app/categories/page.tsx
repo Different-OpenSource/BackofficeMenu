@@ -4,16 +4,16 @@ import { useAuthRedirect } from "@/utils/isAuthenticated";
 import { Fragment, useContext, useEffect, useState } from "react";
 import APICaller from "@/utils/APICaller";
 import { Menu } from "@prisma/client";
-import MenuConfigButtons from "./MenuConfigButtons";
 import { StoreContext } from "../contexts/StoreContext";
-import Button from "@/components/Button";
-import AddMenuModal from "./AddMenuModal";
+import AddMenuModal from "../menus/AddMenuModal";
 import ResponsiveGrid from "@/components/ResponsiveGrid";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const isAuth = useAuthRedirect();
   const [menus, setMenus] = useState<Menu[]>([]);
   const [isOpenAddMenu, setIsOpenAddMenu] = useState(false);
+  const router = useRouter();
   useEffect(() => {
     getMenus();
   }, []);
@@ -28,35 +28,22 @@ export default function Home() {
     }
   }
 
-  function isMenuActive(menu: Menu) {
-    return storeContext.store?.activeMenuId === menu.id;
-  }
-
   return isAuth ? (
     <div className="w-full h-full flex justify-center p-4">
       <div className="flex flex-col gap-4 w-full">
-        <ResponsiveGrid childWidth={400}>
-          <button
-            className="bg-white rounded-lg shadow-lg text-center border-2 w-[400px] border-white text-primary font-bold text-xl h-[60px]"
-            onClick={() => setIsOpenAddMenu(true)}
-          >
-            Adicionar Cardápio
-          </button>
+        <ResponsiveGrid childWidth={300}>
           {menus.map((menu) => (
             <div
               key={menu.id}
-              className={
-                "bg-white rounded-lg shadow-lg p-4 flex justify-between items-center gap-4 border-2 w-[400px] overflow-hidden whitespace-nowrap" +
-                (isMenuActive(menu) ? " border-primary" : " border-white")
-              }
+              className="bg-white rounded-lg shadow-lg p-4 flex justify-between items-center gap-4 border-2 w-[300px] overflow-hidden whitespace-nowrap border-white"
             >
               <span className="truncate">{menu.name}</span>
-              <MenuConfigButtons
-                menu={menu}
-                updateMenus={getMenus}
-                updateStore={() => storeContext.getStoreData()}
-                isActive={isMenuActive(menu)}
-              />
+              <button
+                className="font-semibold text-primary"
+                onClick={() => router.push(`/categories/${menu.id}`)}
+              >
+                Editar Categorias
+              </button>
             </div>
           ))}
         </ResponsiveGrid>

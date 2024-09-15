@@ -61,12 +61,7 @@ export default function MenuConfigButtons({
         >
           Ativar
         </button>
-        <button
-          className="text-primary"
-          onClick={() => router.push(`/menus/${menu.id}`)}
-        >
-          Editar conteúdo
-        </button>
+       
         <button onClick={() => setIsOpenEdit(true)}>
           <PencilIcon />
         </button>

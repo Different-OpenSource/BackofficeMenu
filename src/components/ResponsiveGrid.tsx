@@ -1,10 +1,24 @@
+import { useRef } from "react";
+
 export default function ResponsiveGrid({
   children,
+  childWidth,
 }: {
   children: React.ReactNode;
+  childWidth: number;
 }) {
+  const gridRef = useRef<HTMLDivElement>(null);
+
+  const gridStyle = {
+    gridTemplateColumns: `repeat(auto-fit, ${childWidth}px)`,
+  };
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+    <div
+      ref={gridRef}
+      className="grid gap-4 w-full justify-center"
+      style={gridStyle}
+    >
       {children}
     </div>
   );
