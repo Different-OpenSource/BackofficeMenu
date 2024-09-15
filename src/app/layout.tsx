@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import StoreContextProvider from "./contexts/StoreContext";
-import Header from "@/components/Header";
+import PageOrLoading from "./PageOrLoading";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,8 +24,12 @@ export default function RootLayout({
         <Toaster position="top-center" />
         <StoreContextProvider>
           <div className="min-w-screen min-h-screen flex flex-col overflow-x-hidden">
-            <Header />
-            {children}
+            <PageOrLoading>{children}</PageOrLoading>
+            {/* <Header />
+            <div className="flex h-full flex-1 ">
+              <SideMenu />
+              {children}
+            </div> */}
           </div>
         </StoreContextProvider>
       </body>

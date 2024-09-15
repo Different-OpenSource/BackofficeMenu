@@ -33,7 +33,7 @@ export default function Register() {
   }
 
   return (
-    <div className="flex w-full h-full justify-center items-center">
+    <div className="flex w-full h-screen justify-center items-center">
       <div className="flex flex-col w-96 shadow-xl p-10 rounded-lg gap-2">
         <TextInput
           setValue={setValue}

@@ -38,7 +38,7 @@ export default function MenuItem({ params }: { params: MenuItemParams }) {
 
   return isAuth ? (
     <div className="w-full h-full flex relative">
-      <div className=" absolute left-0 top-0 h-full border-blue-800 border-l p-4 flex flex-col gap-4">
+      {/* <div className=" absolute left-0 top-0 h-full border-blue-800 border-l p-4 flex flex-col gap-4">
         <div className="w-64">
           <Button
             style="outline"
@@ -51,7 +51,7 @@ export default function MenuItem({ params }: { params: MenuItemParams }) {
           categories={categories}
           updateCategories={getCategories}
         />
-      </div>
+      </div> */}
       <div className="flex flex-col gap-4 overflow-hidden flex-1 items-center">
         <span className="font-semibold text-center">
           Cardápio: {params.menuId}
