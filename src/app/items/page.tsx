@@ -9,6 +9,7 @@ import ConfirmDecisionModal from "@/components/ConfirmDecisionModal";
 import EditItemModal from "@/components/itemModals/EditItemModal";
 import toast from "react-hot-toast";
 import ItemCard from "./ItemCard";
+import CreateItemModal from "@/components/itemModals/CreateItemModal";
 
 export default function Items() {
   const [selectedItemEdit, setSelectedItemEdit] = useState<Item | null>(null);
@@ -17,6 +18,7 @@ export default function Items() {
   );
   const [selectedItemSelectMenus, setSelectedItemSelectMenus] =
     useState<Item | null>(null);
+  const [isOpenCreateItem, setIsOpenCreateItem] = useState(false);
 
   const [items, setItems] = useState([]);
   useEffect(() => {
@@ -51,6 +53,12 @@ export default function Items() {
         <div className="flex flex-col gap-4 w-full">
           <span className="font-semibold text-xl text-center">Itens:</span>
           <ResponsiveGrid childWidth={384}>
+            <button
+              className="w-96 h-32 bg-white rounded text-center text-xl font-semibold text-primary"
+              onClick={() => setIsOpenCreateItem(true)}
+            >
+              Adicionar Item
+            </button>
             {items.map((item) => (
               <ItemCard
                 item={item}
@@ -62,6 +70,11 @@ export default function Items() {
           </ResponsiveGrid>
         </div>
       </div>
+      <CreateItemModal
+        updateItems={() => getItems()}
+        isOpen={isOpenCreateItem}
+        onClose={() => setIsOpenCreateItem(false)}
+      />
       {selectedItemEdit && (
         <EditItemModal
           item={selectedItemEdit}

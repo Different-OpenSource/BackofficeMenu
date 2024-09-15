@@ -6,7 +6,7 @@ export async function POST(request: NextRequest) {
   try {
     await getDataToken(request);
     const reqBody = await request.json();
-    const item = await prisma.item.create({
+    await prisma.item.create({
       data: {
         name: reqBody.name,
         description: reqBody.description,
@@ -16,15 +16,6 @@ export async function POST(request: NextRequest) {
         internalDescription: reqBody.internalDescription || null,
       },
     });
-
-    if (reqBody.categoryId) {
-      await prisma.categoryItem.create({
-        data: {
-          categoryId: reqBody.categoryId,
-          itemId: item.id,
-        },
-      });
-    }
 
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error: any) {

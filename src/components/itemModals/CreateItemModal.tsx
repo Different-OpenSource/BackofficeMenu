@@ -9,12 +9,10 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 
 export default function CreateItemModal({
-  categoryId,
   isOpen,
   onClose,
   updateItems,
 }: {
-  categoryId: string;
   isOpen: boolean;
   onClose: () => void;
   updateItems: () => void;
@@ -40,7 +38,6 @@ export default function CreateItemModal({
     }
     try {
       const requestData = {
-        categoryId,
         description,
         price,
         shortDescription,
