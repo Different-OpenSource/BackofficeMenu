@@ -8,11 +8,11 @@ export default function SideMenu() {
   const router = useRouter();
 
   return (
-    <div className="flex flex-col mn-h-full w-64 gap-1 bg-gray-100">
+    <div className="flex flex-col mn-h-full min-w-52 gap-1 bg-gray-100">
       {routes.map((route) => (
         <button
-          className={`flex items-center gap-2 font-semibold p-2 bg-white ${
-            pathname === route.path ? " text-primary " : ""
+          className={`flex items-center gap-2 font-semibold p-2 bg-white w-full ${
+            pathname.includes(route.path) ? " text-primary " : ""
           }`}
           onClick={() => {
             router.push(route.path);

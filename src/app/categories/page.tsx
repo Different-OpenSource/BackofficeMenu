@@ -1,7 +1,6 @@
 "use client";
 
-import { useAuthRedirect } from "@/utils/isAuthenticated";
-import { Fragment, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import APICaller from "@/utils/APICaller";
 import { Menu } from "@prisma/client";
 import { StoreContext } from "../contexts/StoreContext";
@@ -9,8 +8,7 @@ import AddMenuModal from "../menus/AddMenuModal";
 import ResponsiveGrid from "@/components/ResponsiveGrid";
 import { useRouter } from "next/navigation";
 
-export default function Home() {
-  const isAuth = useAuthRedirect();
+export default function Categories() {
   const [menus, setMenus] = useState<Menu[]>([]);
   const [isOpenAddMenu, setIsOpenAddMenu] = useState(false);
   const router = useRouter();
@@ -28,9 +26,12 @@ export default function Home() {
     }
   }
 
-  return isAuth ? (
+  return (
     <div className="w-full h-full flex justify-center p-4">
       <div className="flex flex-col gap-4 w-full">
+        <span className="font-semibold text-xl text-center">
+          Selecione o cardápio
+        </span>
         <ResponsiveGrid childWidth={300}>
           {menus.map((menu) => (
             <div
@@ -55,7 +56,5 @@ export default function Home() {
         updateMenus={getMenus}
       />
     </div>
-  ) : (
-    <Fragment />
   );
 }

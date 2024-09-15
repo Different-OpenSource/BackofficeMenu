@@ -1,5 +1,5 @@
 import { Item } from "@prisma/client";
-import mockItem from "../../../assets/mockItem.jpeg";
+import mockItem from "../../assets/mockItem.jpeg";
 import { NumericFormat } from "react-number-format";
 import ThreeDotsIcon from "@/assets/ThreeDotsIcon";
 import { Fragment } from "react";

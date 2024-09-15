@@ -1,17 +1,14 @@
 "use client";
 
-import { useAuthRedirect } from "@/utils/isAuthenticated";
 import { Fragment, useContext, useEffect, useState } from "react";
 import APICaller from "@/utils/APICaller";
 import { Menu } from "@prisma/client";
 import MenuConfigButtons from "./MenuConfigButtons";
 import { StoreContext } from "../contexts/StoreContext";
-import Button from "@/components/Button";
 import AddMenuModal from "./AddMenuModal";
 import ResponsiveGrid from "@/components/ResponsiveGrid";
 
 export default function Home() {
-  const isAuth = useAuthRedirect();
   const [menus, setMenus] = useState<Menu[]>([]);
   const [isOpenAddMenu, setIsOpenAddMenu] = useState(false);
   useEffect(() => {
@@ -32,7 +29,7 @@ export default function Home() {
     return storeContext.store?.activeMenuId === menu.id;
   }
 
-  return isAuth ? (
+  return (
     <div className="w-full h-full flex justify-center p-4">
       <div className="flex flex-col gap-4 w-full">
         <ResponsiveGrid childWidth={400}>
@@ -68,7 +65,5 @@ export default function Home() {
         updateMenus={getMenus}
       />
     </div>
-  ) : (
-    <Fragment />
   );
 }

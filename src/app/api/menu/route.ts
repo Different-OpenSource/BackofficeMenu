@@ -1,7 +1,26 @@
 import { getDataToken } from "@/utils/getDataToken";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "../../../../lib/prisma";
-
+export async function GET(request: NextRequest) {
+  try {
+    await getDataToken(request);
+    const url = new URL(request.url);
+    const searchParams = new URLSearchParams(url.searchParams);
+    const menuId = searchParams.get("menuId");
+    if (!menuId) {
+      return NextResponse.json(
+        { error: "menuId is required" },
+        { status: 400 }
+      );
+    }
+    const menu = await prisma.menu.findFirst({
+      where: { id: menuId },
+    });
+    return NextResponse.json({ menu }, { status: 200 });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+}
 export async function POST(request: NextRequest) {
   try {
     await getDataToken(request);

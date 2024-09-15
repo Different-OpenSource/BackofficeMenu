@@ -5,12 +5,10 @@ import { Category, Item } from "@prisma/client";
 import { useEffect, useState } from "react";
 
 export default function SelectMenusModal({
-  menuId,
   item,
   isOpen,
   onClose,
 }: {
-  menuId: string;
   item: Item;
   isOpen: boolean;
   onClose: () => void;
@@ -20,11 +18,8 @@ export default function SelectMenusModal({
 
   async function getCategories() {
     try {
-      const response = await APICaller(
-        `/api/categories?menuId=${menuId}`,
-        "GET"
-      );
-      setAllCategories(response.categories);
+      const response = await APICaller(`/api/allCategories`, "GET");
+      setAllCategories(response.allCategories);
     } catch (error) {
       console.error("Erro ao buscar as categorias:", error);
     }

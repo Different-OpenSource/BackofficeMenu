@@ -1,18 +1,14 @@
 "use client";
 import APICaller from "@/utils/APICaller";
-import { useAuthRedirect } from "@/utils/isAuthenticated";
 import { Category } from "@prisma/client";
 import { Fragment, useEffect, useState } from "react";
 import CategoriesList from "./CategoriesList";
 import ItemList from "./ItemList";
-import CategoriesLines from "./CategoriesLines";
-import Button from "@/components/Button";
 
 interface MenuItemParams {
   menuId: string;
 }
 export default function MenuItem({ params }: { params: MenuItemParams }) {
-  const isAuth = useAuthRedirect();
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(
     null
   );
@@ -36,7 +32,7 @@ export default function MenuItem({ params }: { params: MenuItemParams }) {
     getCategories();
   }, []);
 
-  return isAuth ? (
+  return (
     <div className="w-full h-full flex relative">
       {/* <div className=" absolute left-0 top-0 h-full border-blue-800 border-l p-4 flex flex-col gap-4">
         <div className="w-64">
@@ -68,7 +64,5 @@ export default function MenuItem({ params }: { params: MenuItemParams }) {
         )}
       </div>
     </div>
-  ) : (
-    <Fragment />
   );
 }

@@ -4,12 +4,14 @@ import SideMenu from "@/components/SideMenu";
 import { Fragment, useContext, useEffect } from "react";
 import { StoreContext } from "./contexts/StoreContext";
 import { usePathname } from "next/navigation";
+import { useAuthRedirect } from "@/utils/isAuthenticated";
 
 export default function PageOrLoading({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const isAuth = useAuthRedirect();
   const pathname = usePathname();
   const storeContext = useContext(StoreContext);
   const hideHeaderPaths = ["/login", "/register", "/"];
@@ -34,6 +36,11 @@ export default function PageOrLoading({
       </div>
     );
   }
+
+  if (!isAuth) {
+    return <Fragment />;
+  }
+
   return (
     <Fragment>
       <Header />
