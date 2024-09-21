@@ -1,9 +1,8 @@
-import { Item } from "@prisma/client";
-import mockItem from "../../assets/mockItem.jpeg";
 import { NumericFormat } from "react-number-format";
 import ThreeDotsIcon from "@/assets/ThreeDotsIcon";
 import { Fragment } from "react";
 import DropdownContextMenu from "@/components/DropdownContextMenu";
+import ItemWithImage from "@/interfaces/ItemWIthImage";
 
 export default function ItemCard({
   item,
@@ -11,7 +10,7 @@ export default function ItemCard({
   onDelete,
   onSelectMenus,
 }: {
-  item: Item;
+  item: ItemWithImage;
   onEdit: () => void;
   onDelete: () => void;
   onSelectMenus: () => void;
@@ -23,7 +22,10 @@ export default function ItemCard({
         className="rounded shadow-md bg-white p-4 flex gap-4 w-96"
       >
         <div className="w-24 h-24 rounded-sm overflow-hidden">
-          <img className="h-full w-full" src={mockItem.src}></img>
+          <img
+            className="h-full w-full"
+            src={URL.createObjectURL(item.imageFile)}
+          ></img>
         </div>
         <div className="flex flex-col flex-1 justify-between">
           <div>

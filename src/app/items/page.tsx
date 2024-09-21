@@ -10,9 +10,12 @@ import EditItemModal from "@/components/itemModals/EditItemModal";
 import toast from "react-hot-toast";
 import ItemCard from "./ItemCard";
 import CreateItemModal from "@/components/itemModals/CreateItemModal";
+import { deleteImage, getImage } from "@/utils/R2";
+import ItemWithImage from "@/interfaces/ItemWIthImage";
 
 export default function Items() {
-  const [selectedItemEdit, setSelectedItemEdit] = useState<Item | null>(null);
+  const [selectedItemEdit, setSelectedItemEdit] =
+    useState<ItemWithImage | null>(null);
   const [selectedItemDelete, setSelectedItemDelete] = useState<Item | null>(
     null
   );
@@ -20,7 +23,7 @@ export default function Items() {
     useState<Item | null>(null);
   const [isOpenCreateItem, setIsOpenCreateItem] = useState(false);
 
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState<ItemWithImage[]>([]);
   useEffect(() => {
     getItems();
   }, []);
@@ -28,8 +31,18 @@ export default function Items() {
   async function getItems() {
     try {
       const response = await APICaller("/api/allItems", "GET", {});
-      setItems(response.allItems);
-      console.log(response.allItems);
+      const items: Item[] = response.allItems;
+      const map = new Map<string, File | Blob>();
+      const imagePromises = items.map(async (item) => {
+        const image = await getImage(item.image);
+        map.set(item.id, image);
+      });
+
+      Promise.all(imagePromises).then(() => {
+        setItems(
+          items.map((item) => ({ ...item, imageFile: map.get(item.id)! }))
+        );
+      });
     } catch (error) {
       console.error("Erro ao buscar os menus:", error);
     }
@@ -39,6 +52,7 @@ export default function Items() {
     try {
       const response = await APICaller(`/api/item?itemId=${item.id}`, "DELETE");
       if (response.success) {
+        deleteImage(item.image);
         getItems();
         toast.success("Item excluído com sucesso!");
       }
@@ -59,8 +73,9 @@ export default function Items() {
             >
               Adicionar Item
             </button>
-            {items.map((item) => (
+            {items.map((item, i) => (
               <ItemCard
+                key={i}
                 item={item}
                 onEdit={() => setSelectedItemEdit(item)}
                 onDelete={() => setSelectedItemDelete(item)}

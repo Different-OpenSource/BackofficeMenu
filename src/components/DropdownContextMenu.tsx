@@ -25,8 +25,9 @@ export default function DropdownContextMenu({
               (isOptionsOpen ? "" : "hidden")
             }
           >
-            {options.map((option) => (
+            {options.map((option, i) => (
               <button
+                key={i}
                 className="px-10 py-2 border-b hover:bg-gray-100 "
                 onClick={() => {
                   setIsOptionsOpen(false);

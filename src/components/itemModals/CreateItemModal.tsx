@@ -4,6 +4,7 @@ import Modal from "@/components/Modal";
 import NumberInput from "@/components/NumberInput";
 import TextInput from "@/components/TextInput";
 import APICaller from "@/utils/APICaller";
+import { pushImage } from "@/utils/R2";
 import { Item } from "@prisma/client";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -17,11 +18,13 @@ export default function CreateItemModal({
   onClose: () => void;
   updateItems: () => void;
 }) {
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [internalDescription, setInternalDescription] = useState("");
   const [description, setDescription] = useState("");
   const [shortDescription, setShortDescription] = useState("");
   const [price, setPrice] = useState(0);
   const [name, setName] = useState("");
+  const [image, setImage] = useState<File | null>(null);
 
   function clearFields() {
     setDescription("");
@@ -29,30 +32,58 @@ export default function CreateItemModal({
     setPrice(0);
     setName("");
     setInternalDescription("");
+    setImage(null);
+  }
+
+  function handleImageChange(event: any) {
+    const file = event.target.files[0] as File;
+    if (!file) {
+      return;
+    }
+    setImage(file);
   }
 
   async function createItem() {
+    if (!image) {
+      toast.error("Selecione uma imagem!");
+      return;
+    }
     if (!name || !description || !shortDescription || !price) {
       toast.error("Preencha todos os campos!");
       return;
     }
     try {
-      const requestData = {
-        description,
-        price,
-        shortDescription,
-        name,
-        internalDescription,
-      };
-      const response = await APICaller("/api/item", "POST", requestData);
-      if (response.success) {
-        updateItems();
-        onClose();
-        clearFields();
-        toast.success("Item criada com sucesso!");
-      }
+      const promise = new Promise(async (resolve) => {
+        setIsButtonDisabled(true);
+        await postItem();
+        setIsButtonDisabled(false);
+        resolve(null);
+      });
+      toast.promise(promise, {
+        loading: "Editando item...",
+        success: "Item criado com sucesso!",
+      } as any);
     } catch (error) {
       console.error("Erro ao criar categoria:", error);
+    }
+  }
+
+  async function postItem() {
+    const pushOptions = await pushImage(image!);
+    const requestData = {
+      description,
+      price,
+      shortDescription,
+      name,
+      internalDescription,
+      image: pushOptions.fileName,
+    };
+    const response = await APICaller("/api/item", "POST", requestData);
+    if (response.success) {
+      await pushOptions.uploadFile();
+      updateItems();
+      onClose();
+      clearFields();
     }
   }
   return (
@@ -95,7 +126,17 @@ export default function CreateItemModal({
           value={price}
           setValue={setPrice}
         />
-        <div className="self-end w-1/2">
+        <div className="flex flex-col gap-2">
+          <span className="text-sm font-medium">Imagem</span>
+          <input
+            type="file"
+            onChange={handleImageChange}
+            accept="image/png, image/jpeg, image/jpg"
+          />
+        </div>
+        <div
+          className={`self-end w-1/2 ${isButtonDisabled ? " pointer-events-none opacity-50" : ""}`}
+        >
           <Button onClick={createItem} style="primary" text="Criar Item" />
         </div>
       </div>

@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.654.0",
+    "@aws-sdk/s3-request-presigner": "^3.654.0",
     "@prisma/client": "^5.18.0",
     "bcrypt": "^5.1.1",
     "compressorjs": "^1.2.1",
