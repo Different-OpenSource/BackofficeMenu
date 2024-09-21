@@ -9,8 +9,9 @@ export default function SideMenu() {
 
   return (
     <div className="flex flex-col mn-h-full min-w-52 gap-1 bg-gray-100">
-      {routes.map((route) => (
+      {routes.map((route, i) => (
         <button
+          key={i}
           className={`flex items-center gap-2 font-semibold p-2 bg-white w-full ${
             pathname.includes(route.path) ? " text-primary " : ""
           }`}
