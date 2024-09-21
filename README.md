@@ -30,11 +30,20 @@ This will initialize the database schema and apply your migrations.
 
 **Step 4: Configure the Environment Variables**
 
-Create a .env file in the root directory of your project. This file will hold your environment variables, including the database connection string:
+Create a .env file in the root directory of your project like this:
 
 ```
-DATABASE_URL = "postgresql://postgres:mysecretpassword@localhost:5432/postgres"
-NEXT_PUBLIC_JWT_KEY = your_jwt_key_here
+# For Database:
+DATABASE_URL= "postgresql://postgres:mysecretpassword@localhost:5432/postgres"
+
+# For JWT:
+NEXT_PUBLIC_JWT_KEY= your_jwt_key_here
+
+# To store images using Cloudflare R2:
+CLOUDFLARE_ACCOUNT_ID= your_cloudflare_account_id_here
+AWS_ACCESS_KEY_ID= your_aws_access_key_id_here
+AWS_SECRET_ACCESS_KEY= your_aws_secret_access_key_here
+AWS_BUCKET_NAME= your_aws_bucket_name_here
 ```
 
 Ensure you replace your_jwt_key_here with your actual JWT key.
