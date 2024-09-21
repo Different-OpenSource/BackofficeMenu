@@ -9,14 +9,20 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.654.0",
+    "@aws-sdk/s3-request-presigner": "^3.654.0",
     "@prisma/client": "^5.18.0",
     "bcrypt": "^5.1.1",
+    "compressorjs": "^1.2.1",
     "jsonwebtoken": "^9.0.2",
     "next": "14.2.5",
     "prettier": "^3.3.3",
     "react": "^18",
+    "react-bootstrap": "^2.10.4",
     "react-dom": "^18",
-    "react-hot-toast": "^2.4.1"
+    "react-hot-toast": "^2.4.1",
+    "react-number-format": "^5.4.0",
+    "react-select": "^5.8.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
@@ -28,6 +34,7 @@
     "eslint-config-next": "14.2.5",
     "postcss": "^8",
     "prisma": "^5.18.0",
+    "tailwind-scrollbar": "^3.1.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   }

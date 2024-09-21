@@ -5,7 +5,7 @@ import prisma from "../../../../lib/prisma";
 export async function POST(request: NextRequest, response: NextResponse) {
   try {
     const data = await request.json();
-    const encryptedPassword = await bcrypt.hash(data.password, 1);
+    const encryptedPassword = await bcrypt.hash(data.password, 16);
     const existingUser = await prisma.user.findUnique({
       where: { email: data.email },
     });
@@ -14,8 +14,10 @@ export async function POST(request: NextRequest, response: NextResponse) {
       return NextResponse.json({ error: "Usuário já existe" }, { status: 400 });
     }
 
+    const store = await prisma.store.findFirst();
     await prisma.user.create({
       data: {
+        storeId: store!.id,
         email: data.email,
         name: data.name,
         password: encryptedPassword,

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
+import StoreContextProvider from "./contexts/StoreContext";
+import PageOrLoading from "./PageOrLoading";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,8 +20,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <div id="portal-root"></div>
         <Toaster position="top-center" />
-        <div className="w-dvw h-dvh">{children}</div>
+        <StoreContextProvider>
+          <div className="min-w-screen min-h-screen flex flex-col overflow-x-hidden">
+            <PageOrLoading>{children}</PageOrLoading>
+            {/* <Header />
+            <div className="flex h-full flex-1 ">
+              <SideMenu />
+              {children}
+            </div> */}
+          </div>
+        </StoreContextProvider>
       </body>
     </html>
   );

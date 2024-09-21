@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 
 export default function Register() {
   const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
+  const [name, setValue] = useState("");
   const [password, setPassword] = useState("");
 
   const router = useRouter();
@@ -33,24 +33,24 @@ export default function Register() {
   }
 
   return (
-    <div className="flex w-full h-full justify-center items-center">
+    <div className="flex w-full h-screen justify-center items-center">
       <div className="flex flex-col w-96 shadow-xl p-10 rounded-lg gap-2">
         <TextInput
-          setName={setName}
+          setValue={setValue}
           value={name}
           type="text"
           label="Nome"
           placeholder="John"
         />
         <TextInput
-          setName={setEmail}
+          setValue={setEmail}
           value={email}
           type="email"
           label="Email"
           placeholder="john.doe@company.com"
         />
         <TextInput
-          setName={setPassword}
+          setValue={setPassword}
           value={password}
           type="password"
           label="Senha"

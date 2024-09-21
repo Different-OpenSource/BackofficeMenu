@@ -11,7 +11,6 @@ export default function Login() {
   const params = useSearchParams();
   const [email, setEmail] = useState(params.get("email") || "");
   const [password, setPassword] = useState("");
-
   const router = useRouter();
 
   async function handleLogin() {
@@ -24,7 +23,7 @@ export default function Login() {
       const response = await APICaller("/api/login", "POST", requestData);
       if (response.success) {
         localStorage.setItem("token", response.token);
-        router.push("/");
+        router.push("/menus");
       } else {
         toast.error("Usuário ou senha inválidos");
       }
@@ -34,17 +33,17 @@ export default function Login() {
   }
 
   return (
-    <div className="flex w-full h-full justify-center items-center">
+    <div className="flex w-full h-screen justify-center items-center flex-1">
       <div className="flex flex-col w-96 shadow-xl p-10 rounded-lg gap-2">
         <TextInput
-          setName={setEmail}
+          setValue={setEmail}
           value={email}
           type="email"
           label="Email"
           placeholder="john.doe@company.com"
         />
         <TextInput
-          setName={setPassword}
+          setValue={setPassword}
           value={password}
           type="password"
           label="Senha"
