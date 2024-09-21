@@ -60,7 +60,7 @@ export default function CreateItemModal({
         resolve(null);
       });
       toast.promise(promise, {
-        loading: "Editando item...",
+        loading: "Criando item...",
         success: "Item criado com sucesso!",
       } as any);
     } catch (error) {
