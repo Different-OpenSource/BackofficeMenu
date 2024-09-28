@@ -11,12 +11,18 @@ export default function PageOrLoading({
 }: {
   children: React.ReactNode;
 }) {
-  const isAuth = useAuthRedirect();
   const pathname = usePathname();
   const storeContext = useContext(StoreContext);
   const hideHeaderPaths = ["/login", "/register", "/"];
+  if (hideHeaderPaths.some((path) => path === pathname)) {
+    return children;
+  }
+  const isAuth = useAuthRedirect();
 
   useEffect(() => {
+    if (hideHeaderPaths.some((path) => path === pathname)) {
+      return;
+    }
     storeContext.getStoreData();
   }, [pathname]);
 
