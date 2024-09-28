@@ -6,7 +6,7 @@ import { Fragment, useEffect } from "react";
 export default function Home() {
   const router = useRouter();
   useEffect(() => {
-    router.replace("/menus");
+    router.replace("/home");
   }, []);
   return <Fragment />;
 }

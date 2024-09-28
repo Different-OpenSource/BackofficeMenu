@@ -19,7 +19,7 @@ export default function Items() {
   const [selectedItemDelete, setSelectedItemDelete] = useState<Item | null>(
     null
   );
-  const [selectedItemSelectMenus, setSelectedItemSelectMenus] =
+  const [selectedItemSelectCategories, setSelectedItemSelectCategories] =
     useState<Item | null>(null);
   const [isOpenCreateItem, setIsOpenCreateItem] = useState(false);
 
@@ -79,7 +79,7 @@ export default function Items() {
                 item={item}
                 onEdit={() => setSelectedItemEdit(item)}
                 onDelete={() => setSelectedItemDelete(item)}
-                onSelectMenus={() => setSelectedItemSelectMenus(item)}
+                onSelectCategories={() => setSelectedItemSelectCategories(item)}
               />
             ))}
           </ResponsiveGrid>
@@ -108,11 +108,11 @@ export default function Items() {
           onDecline={() => {}}
         />
       )}
-      {selectedItemSelectMenus && (
+      {selectedItemSelectCategories && (
         <SelectMenusModal
-          isOpen={selectedItemSelectMenus !== null}
-          onClose={() => setSelectedItemSelectMenus(null)}
-          item={selectedItemSelectMenus}
+          isOpen={selectedItemSelectCategories !== null}
+          onClose={() => setSelectedItemSelectCategories(null)}
+          item={selectedItemSelectCategories}
         />
       )}
     </Fragment>

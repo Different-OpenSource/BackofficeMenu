@@ -1,21 +1,17 @@
 "use client";
 
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import APICaller from "@/utils/APICaller";
 import { Menu } from "@prisma/client";
-import { StoreContext } from "../contexts/StoreContext";
-import AddMenuModal from "@/components/menuModals/AddMenuModal";
 import ResponsiveGrid from "@/components/ResponsiveGrid";
 import { useRouter } from "next/navigation";
 
 export default function Categories() {
   const [menus, setMenus] = useState<Menu[]>([]);
-  const [isOpenAddMenu, setIsOpenAddMenu] = useState(false);
   const router = useRouter();
   useEffect(() => {
     getMenus();
   }, []);
-  const storeContext = useContext(StoreContext);
 
   async function getMenus() {
     try {
@@ -49,12 +45,6 @@ export default function Categories() {
           ))}
         </ResponsiveGrid>
       </div>
-      <AddMenuModal
-        storeId={storeContext.store?.id ?? ""}
-        isOpen={isOpenAddMenu}
-        onClose={() => setIsOpenAddMenu(false)}
-        updateMenus={getMenus}
-      />
     </div>
   );
 }

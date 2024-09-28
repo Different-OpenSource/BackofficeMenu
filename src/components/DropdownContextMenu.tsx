@@ -14,6 +14,10 @@ export default function DropdownContextMenu({
 }) {
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
 
+  if (!options.length) {
+    return <Fragment></Fragment>;
+  }
+
   return (
     <Fragment>
       <div className="px-2 relative">

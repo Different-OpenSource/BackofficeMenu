@@ -8,13 +8,31 @@ export default function ItemCard({
   item,
   onEdit,
   onDelete,
-  onSelectMenus,
+  onSelectCategories,
 }: {
   item: ItemWithImage;
-  onEdit: () => void;
-  onDelete: () => void;
-  onSelectMenus: () => void;
+  onEdit?: () => void;
+  onDelete?: () => void;
+  onSelectCategories?: () => void;
 }) {
+  function getOptions() {
+    const output = [];
+
+    if (onEdit) {
+      output.push({ label: "Editar Item", onClick: onEdit });
+    }
+    if (onSelectCategories) {
+      output.push({
+        label: "Selecionar Categorias",
+        onClick: onSelectCategories,
+      });
+    }
+    if (onDelete) {
+      output.push({ label: "Excluir Item", onClick: onDelete });
+    }
+    return output;
+  }
+
   return (
     <Fragment>
       <div
@@ -31,13 +49,7 @@ export default function ItemCard({
           <div>
             <div className="font-semibold flex justify-between items-center">
               <span>{item.name}</span>
-              <DropdownContextMenu
-                options={[
-                  { label: "Editar Item", onClick: () => onEdit() },
-                  { label: "Selecionar Menus", onClick: () => onSelectMenus() },
-                  { label: "Excluir Item", onClick: () => onDelete() },
-                ]}
-              >
+              <DropdownContextMenu options={getOptions()}>
                 <ThreeDotsIcon />
               </DropdownContextMenu>
             </div>
