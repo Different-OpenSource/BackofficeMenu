@@ -9,7 +9,6 @@ import ConfirmDecisionModal from "@/components/ConfirmDecisionModal";
 import EditItemModal from "@/components/itemModals/EditItemModal";
 import ItemCard from "./ItemCard";
 import CreateItemModal from "@/components/itemModals/CreateItemModal";
-import { deleteImage, getImage } from "@/utils/R2";
 import { Skeletons } from "@/components/Skeleton";
 import { loaderToast } from "@/utils/loaderToast";
 
@@ -42,7 +41,6 @@ export default function Items() {
       success: "Item Excluído com sucesso!",
       error: "Erro ao excluir item!",
       onSuccess: () => {
-        deleteImage(item.image);
         getItems();
       },
     });
