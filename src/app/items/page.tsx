@@ -7,12 +7,12 @@ import ResponsiveGrid from "@/components/ResponsiveGrid";
 import SelectMenusModal from "@/components/itemModals/SelectMenusModal";
 import ConfirmDecisionModal from "@/components/ConfirmDecisionModal";
 import EditItemModal from "@/components/itemModals/EditItemModal";
-import toast from "react-hot-toast";
 import ItemCard from "./ItemCard";
 import CreateItemModal from "@/components/itemModals/CreateItemModal";
 import { deleteImage, getImage } from "@/utils/R2";
 import ItemWithImage from "@/interfaces/ItemWIthImage";
 import { Skeletons } from "@/components/Skeleton";
+import { loaderToast } from "@/utils/loaderToast";
 
 export default function Items() {
   const [selectedItemEdit, setSelectedItemEdit] =
@@ -50,16 +50,15 @@ export default function Items() {
   }
 
   async function deleteItem(item: Item) {
-    try {
-      const response = await APICaller(`/api/item?itemId=${item.id}`, "DELETE");
-      if (response.success) {
+    loaderToast(() => APICaller(`/api/item?itemId=${item.id}`, "DELETE"), {
+      loading: "Excluindo item...",
+      success: "Item Excluído com sucesso!",
+      error: "Erro ao excluir item!",
+      onSuccess: () => {
         deleteImage(item.image);
         getItems();
-        toast.success("Item excluído com sucesso!");
-      }
-    } catch (error) {
-      console.error("Erro ao deletar item:", error);
-    }
+      },
+    });
   }
 
   return (

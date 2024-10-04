@@ -3,9 +3,9 @@ import Button from "@/components/Button";
 import Modal from "@/components/Modal";
 import TextInput from "@/components/TextInput";
 import APICaller from "@/utils/APICaller";
+import { loaderToast } from "@/utils/loaderToast";
 import { Category } from "@prisma/client";
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
 
 export default function EditCategoryNameModal({
   category,
@@ -25,20 +25,22 @@ export default function EditCategoryNameModal({
   }, [category]);
 
   async function editCategory() {
-    try {
-      const response = await APICaller(`/api/category`, "PATCH", {
-        id: category.id,
-        name: newCategoryName,
-      });
-
-      if (response.success) {
-        updateCategories();
-        onClose();
-        toast.success("Categoria editada com sucesso!");
+    loaderToast(
+      () =>
+        APICaller(`/api/category`, "PATCH", {
+          id: category.id,
+          name: newCategoryName,
+        }),
+      {
+        loading: "Editando categoria...",
+        success: "Categoria editada com sucesso!",
+        error: "Erro ao editar categoria!",
+        onSuccess: () => {
+          updateCategories();
+          onClose();
+        },
       }
-    } catch (error) {
-      console.error("Erro ao editar categoria:", error);
-    }
+    );
   }
   return (
     <Modal isOpen={isOpen} onClose={onClose}>

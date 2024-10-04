@@ -5,6 +5,7 @@ import NumberInput from "@/components/NumberInput";
 import TextInput from "@/components/TextInput";
 import ItemWithImage from "@/interfaces/ItemWIthImage";
 import APICaller from "@/utils/APICaller";
+import { loaderToast } from "@/utils/loaderToast";
 import { deleteImage, pushImage } from "@/utils/R2";
 import { Fragment, useState } from "react";
 import toast from "react-hot-toast";
@@ -45,23 +46,6 @@ export default function EditItemModal({
       toast.error("Preencha todos os campos!");
       return;
     }
-    try {
-      const promise = new Promise(async (resolve) => {
-        setIsButtonDisabled(true);
-        await patchItem();
-        setIsButtonDisabled(false);
-        resolve(null);
-      });
-      toast.promise(promise, {
-        loading: "Editando item...",
-        success: "Item editado com sucesso!",
-      } as any);
-    } catch (error) {
-      console.error("Erro ao criar categoria:", error);
-    }
-  }
-
-  async function patchItem() {
     const pushOptions = image
       ? await pushImage(image)
       : { fileName: item.image, uploadFile: async () => {} };
@@ -75,17 +59,25 @@ export default function EditItemModal({
       internalDescription,
       image: pushOptions.fileName,
     };
+    setIsButtonDisabled(true);
+    const promises = image
+      ? [
+          APICaller("/api/item", "PATCH", requestData),
+          pushOptions.uploadFile(),
+          deleteImage(item.image),
+        ]
+      : [APICaller("/api/item", "PATCH", requestData)];
 
-    const response = await APICaller("/api/item", "PATCH", requestData);
-    if (!response.success) {
-      return;
-    }
-    if (image) {
-      await pushOptions.uploadFile();
-      await deleteImage(item.image);
-    }
-    updateItems();
-    onClose();
+    loaderToast(() => Promise.all(promises), {
+      loading: "Editando item...",
+      success: "Item editado com sucesso!",
+      error: "Erro ao editar item!",
+      onSuccess: async () => {
+        setIsButtonDisabled(false);
+        updateItems();
+        onClose();
+      },
+    });
   }
 
   return (

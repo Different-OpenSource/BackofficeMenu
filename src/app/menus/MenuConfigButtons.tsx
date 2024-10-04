@@ -3,10 +3,9 @@ import PencilIcon from "@/assets/PencilIcon";
 import { Fragment, useState } from "react";
 import EditMenuModal from "@/components/menuModals/EditMenuModal";
 import { Menu } from "@prisma/client";
-import { useRouter } from "next/navigation";
 import ConfirmDecisionModal from "@/components/ConfirmDecisionModal";
 import APICaller from "@/utils/APICaller";
-import toast from "react-hot-toast";
+import { loaderToast } from "@/utils/loaderToast";
 
 export default function MenuConfigButtons({
   isActive,
@@ -19,36 +18,36 @@ export default function MenuConfigButtons({
   updateMenus: () => void;
   updateStore: () => void;
 }) {
-  const router = useRouter();
   const [isOpenEdit, setIsOpenEdit] = useState(false);
   const [isOpenConfirmDelete, setIsOpenConfirmDelete] = useState(false);
 
   async function deleteMenu() {
-    try {
-      const response = await APICaller(`/api/menu?menuId=${menu.id}`, "DELETE");
-      if (response.success) {
+    loaderToast(() => APICaller(`/api/menu?menuId=${menu.id}`, "DELETE"), {
+      loading: "Excluindo cardápio...",
+      success: "Cardápio excluído com sucesso!",
+      error: "Erro ao excluir cardápio!",
+      onSuccess: () => {
         updateMenus();
-        toast.success("Menu excluído com sucesso!");
-      }
-    } catch (error) {
-      console.error("Erro ao deletar menu:", error);
-    }
+      },
+    });
   }
 
   async function activateMenu() {
-    try {
-      const response = await APICaller(`/api/activeMenu`, "PATCH", {
-        storeId: menu.storeId,
-        menuId: menu.id,
-      });
-
-      if (response.success) {
-        updateStore();
-        toast.success("Menu ativado com sucesso!");
+    loaderToast(
+      () =>
+        APICaller(`/api/activeMenu`, "PATCH", {
+          storeId: menu.storeId,
+          menuId: menu.id,
+        }),
+      {
+        loading: "Ativando cardápio...",
+        success: "Cardápio ativado com sucesso!",
+        error: "Erro ao ativar cardápio!",
+        onSuccess: () => {
+          updateStore();
+        },
       }
-    } catch (error) {
-      console.error("Erro ao ativar menu:", error);
-    }
+    );
   }
   return (
     <Fragment>

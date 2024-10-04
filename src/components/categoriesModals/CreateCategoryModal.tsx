@@ -3,8 +3,8 @@ import Button from "@/components/Button";
 import Modal from "@/components/Modal";
 import TextInput from "@/components/TextInput";
 import APICaller from "@/utils/APICaller";
+import { loaderToast } from "@/utils/loaderToast";
 import { useState } from "react";
-import toast from "react-hot-toast";
 
 export default function CreateCategoryModal({
   menuId,
@@ -23,19 +23,23 @@ export default function CreateCategoryModal({
     if (!newCategoryName) {
       return;
     }
-    try {
-      const requestData = { name: newCategoryName, menuId: menuId };
-      const response = await APICaller("/api/category", "POST", requestData);
-      if (response.success) {
-        updateCategories();
-        onClose();
-        setNewCategoryName("");
-        toast.success("Categoria criada com sucesso!");
+    loaderToast(
+      () =>
+        APICaller("/api/category", "POST", {
+          name: newCategoryName,
+          menuId: menuId,
+        }),
+      {
+        loading: "Criando categoria...",
+        success: "Categoria criada com sucesso!",
+        error: "Erro ao criar categoria!",
+        onSuccess: () => {
+          updateCategories();
+          onClose();
+          setNewCategoryName("");
+        },
       }
-      response.error && console.error(response.error);
-    } catch (error) {
-      console.error("Erro ao criar categoria:", error);
-    }
+    );
   }
   return (
     <Modal isOpen={isOpen} onClose={onClose}>

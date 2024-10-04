@@ -3,8 +3,8 @@ import Button from "@/components/Button";
 import Modal from "@/components/Modal";
 import TextInput from "@/components/TextInput";
 import APICaller from "@/utils/APICaller";
+import { loaderToast } from "@/utils/loaderToast";
 import { useState } from "react";
-import toast from "react-hot-toast";
 
 export default function AddMenuModal({
   storeId,
@@ -19,21 +19,23 @@ export default function AddMenuModal({
 }) {
   const [newMenuName, setNewMenuName] = useState("");
 
-  async function editMenu() {
-    try {
-      const response = await APICaller(`/api/menu`, "POST", {
-        storeId: storeId,
-        name: newMenuName,
-      });
-
-      if (response.success) {
-        updateMenus();
-        onClose();
-        toast.success("Cardápio criado com sucesso!");
+  async function createMenu() {
+    loaderToast(
+      () =>
+        APICaller(`/api/menu`, "POST", {
+          storeId: storeId,
+          name: newMenuName,
+        }),
+      {
+        loading: "Criando cardápio...",
+        success: "Cardápio criado com sucesso!",
+        error: "Erro ao criar cardápio!",
+        onSuccess: () => {
+          updateMenus();
+          onClose();
+        },
       }
-    } catch (error) {
-      console.error("Erro ao criar cardápio:", error);
-    }
+    );
   }
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -47,7 +49,7 @@ export default function AddMenuModal({
           type="text"
         />
         <div className="self-end w-1/2">
-          <Button onClick={editMenu} style="primary" text="Criar" />
+          <Button onClick={createMenu} style="primary" text="Criar" />
         </div>
       </div>
     </Modal>
