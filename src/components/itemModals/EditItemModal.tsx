@@ -46,6 +46,22 @@ export default function EditItemModal({
       toast.error("Preencha todos os campos!");
       return;
     }
+
+    setIsButtonDisabled(true);
+
+    loaderToast(() => patchItem(), {
+      loading: "Editando item...",
+      success: "Item editado com sucesso!",
+      error: "Erro ao editar item!",
+      onSuccess: () => {
+        setIsButtonDisabled(false);
+        updateItems();
+        onClose();
+      },
+    });
+  }
+
+  async function patchItem() {
     const pushOptions = image
       ? await pushImage(image)
       : { fileName: item.image, uploadFile: async () => {} };
@@ -59,25 +75,15 @@ export default function EditItemModal({
       internalDescription,
       image: pushOptions.fileName,
     };
-    setIsButtonDisabled(true);
-    const promises = image
-      ? [
-          APICaller("/api/item", "PATCH", requestData),
-          pushOptions.uploadFile(),
-          deleteImage(item.image),
-        ]
-      : [APICaller("/api/item", "PATCH", requestData)];
 
-    loaderToast(() => Promise.all(promises), {
-      loading: "Editando item...",
-      success: "Item editado com sucesso!",
-      error: "Erro ao editar item!",
-      onSuccess: async () => {
-        setIsButtonDisabled(false);
-        updateItems();
-        onClose();
-      },
-    });
+    const response = await APICaller("/api/item", "PATCH", requestData);
+    if (!response.success) {
+      return;
+    }
+    if (image) {
+      await pushOptions.uploadFile();
+      await deleteImage(item.image);
+    }
   }
 
   return (

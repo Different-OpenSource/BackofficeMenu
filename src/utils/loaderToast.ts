@@ -11,10 +11,7 @@ export function loaderToast(
 ): void {
   const promise = new Promise(async (resolve, reject) => {
     try {
-      const response = await method();
-      if (response.error) {
-        reject(response.error);
-      }
+      await method();
       if (options.onSuccess) {
         options.onSuccess();
       }

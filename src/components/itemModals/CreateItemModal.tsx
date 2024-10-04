@@ -4,8 +4,8 @@ import Modal from "@/components/Modal";
 import NumberInput from "@/components/NumberInput";
 import TextInput from "@/components/TextInput";
 import APICaller from "@/utils/APICaller";
+import { loaderToast } from "@/utils/loaderToast";
 import { pushImage } from "@/utils/R2";
-import { Item } from "@prisma/client";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -52,20 +52,19 @@ export default function CreateItemModal({
       toast.error("Preencha todos os campos!");
       return;
     }
-    try {
-      const promise = new Promise(async (resolve) => {
-        setIsButtonDisabled(true);
-        await postItem();
+    setIsButtonDisabled(true);
+
+    loaderToast(() => postItem(), {
+      loading: "Criando item...",
+      success: "Item criado com sucesso!",
+      error: "Erro ao criar item!",
+      onSuccess: () => {
+        updateItems();
+        onClose();
+        clearFields();
         setIsButtonDisabled(false);
-        resolve(null);
-      });
-      toast.promise(promise, {
-        loading: "Criando item...",
-        success: "Item criado com sucesso!",
-      } as any);
-    } catch (error) {
-      console.error("Erro ao criar categoria:", error);
-    }
+      },
+    });
   }
 
   async function postItem() {
@@ -81,9 +80,6 @@ export default function CreateItemModal({
     const response = await APICaller("/api/item", "POST", requestData);
     if (response.success) {
       await pushOptions.uploadFile();
-      updateItems();
-      onClose();
-      clearFields();
     }
   }
   return (
