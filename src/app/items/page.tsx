@@ -12,6 +12,7 @@ import ItemCard from "./ItemCard";
 import CreateItemModal from "@/components/itemModals/CreateItemModal";
 import { deleteImage, getImage } from "@/utils/R2";
 import ItemWithImage from "@/interfaces/ItemWIthImage";
+import { Skeletons } from "@/components/Skeleton";
 
 export default function Items() {
   const [selectedItemEdit, setSelectedItemEdit] =
@@ -23,7 +24,7 @@ export default function Items() {
     useState<Item | null>(null);
   const [isOpenCreateItem, setIsOpenCreateItem] = useState(false);
 
-  const [items, setItems] = useState<ItemWithImage[]>([]);
+  const [items, setItems] = useState<ItemWithImage[] | null>();
   useEffect(() => {
     getItems();
   }, []);
@@ -73,15 +74,21 @@ export default function Items() {
             >
               Adicionar Item
             </button>
-            {items.map((item, i) => (
-              <ItemCard
-                key={i}
-                item={item}
-                onEdit={() => setSelectedItemEdit(item)}
-                onDelete={() => setSelectedItemDelete(item)}
-                onSelectCategories={() => setSelectedItemSelectCategories(item)}
-              />
-            ))}
+            {items ? (
+              items.map((item, i) => (
+                <ItemCard
+                  key={i}
+                  item={item}
+                  onEdit={() => setSelectedItemEdit(item)}
+                  onDelete={() => setSelectedItemDelete(item)}
+                  onSelectCategories={() =>
+                    setSelectedItemSelectCategories(item)
+                  }
+                />
+              ))
+            ) : (
+              <Skeletons className="w-96 h-32 rounded" />
+            )}
           </ResponsiveGrid>
         </div>
       </div>

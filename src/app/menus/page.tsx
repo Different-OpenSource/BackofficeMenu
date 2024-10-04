@@ -7,9 +7,10 @@ import MenuConfigButtons from "./MenuConfigButtons";
 import { StoreContext } from "../contexts/StoreContext";
 import AddMenuModal from "@/components/menuModals/AddMenuModal";
 import ResponsiveGrid from "@/components/ResponsiveGrid";
+import { Skeletons } from "@/components/Skeleton";
 
 export default function Home() {
-  const [menus, setMenus] = useState<Menu[]>([]);
+  const [menus, setMenus] = useState<Menu[] | null>(null);
   const [isOpenAddMenu, setIsOpenAddMenu] = useState(false);
   useEffect(() => {
     getMenus();
@@ -39,23 +40,27 @@ export default function Home() {
           >
             Adicionar Cardápio
           </button>
-          {menus.map((menu) => (
-            <div
-              key={menu.id}
-              className={
-                "bg-white rounded-lg shadow-lg p-4 flex justify-between items-center gap-4 border-2 w-[400px] overflow-hidden whitespace-nowrap" +
-                (isMenuActive(menu) ? " border-primary" : " border-white")
-              }
-            >
-              <span className="truncate">{menu.name}</span>
-              <MenuConfigButtons
-                menu={menu}
-                updateMenus={getMenus}
-                updateStore={() => storeContext.getStoreData()}
-                isActive={isMenuActive(menu)}
-              />
-            </div>
-          ))}
+          {menus ? (
+            menus.map((menu) => (
+              <div
+                key={menu.id}
+                className={
+                  "bg-white rounded-lg shadow-lg p-4 flex justify-between items-center gap-4 border-2 w-[400px] overflow-hidden whitespace-nowrap" +
+                  (isMenuActive(menu) ? " border-primary" : " border-white")
+                }
+              >
+                <span className="truncate">{menu.name}</span>
+                <MenuConfigButtons
+                  menu={menu}
+                  updateMenus={getMenus}
+                  updateStore={() => storeContext.getStoreData()}
+                  isActive={isMenuActive(menu)}
+                />
+              </div>
+            ))
+          ) : (
+            <Skeletons className="w-[400px] h-[60px] rounded-lg" />
+          )}
         </ResponsiveGrid>
       </div>
       <AddMenuModal

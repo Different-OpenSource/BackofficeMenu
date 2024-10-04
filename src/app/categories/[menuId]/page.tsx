@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 import CreateCategoryModal from "@/components/categoriesModals/CreateCategoryModal";
 import ChevronLeftIcon from "@/assets/ChevronLeftIcon";
 import { useRouter } from "next/navigation";
+import { Skeletons } from "@/components/Skeleton";
 
 interface MenuItemParams {
   menuId: string;
@@ -23,7 +24,7 @@ export default function MenuItem({ params }: { params: MenuItemParams }) {
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(
     null
   );
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<Category[] | null>(null);
   const [menu, setMenu] = useState<Menu | null>(null);
 
   async function getMenu() {
@@ -91,30 +92,34 @@ export default function MenuItem({ params }: { params: MenuItemParams }) {
             >
               Adicionar Categoria
             </button>
-            {categories.map((category) => (
-              <div className="w-[300px] bg-white rounded-lg shadow-lg p-4 flex justify-between items-center gap-4 border-2 overflow-hidden">
-                <span className="truncate">{category.name}</span>
-                <div className="gap-2 flex">
-                  <button
-                    onClick={() => {
-                      setSelectedCategory(category);
-                      setIsOpenEditCategory(true);
-                    }}
-                  >
-                    <PencilIcon />
-                  </button>
-                  <button
-                    className="text-red-500"
-                    onClick={() => {
-                      setSelectedCategory(category);
-                      setIsOpenConfirmDelete(true);
-                    }}
-                  >
-                    <DeleteIcon />
-                  </button>
+            {categories ? (
+              categories.map((category) => (
+                <div className="w-[300px] bg-white rounded-lg shadow-lg p-4 flex justify-between items-center gap-4 border-2 overflow-hidden">
+                  <span className="truncate">{category.name}</span>
+                  <div className="gap-2 flex">
+                    <button
+                      onClick={() => {
+                        setSelectedCategory(category);
+                        setIsOpenEditCategory(true);
+                      }}
+                    >
+                      <PencilIcon />
+                    </button>
+                    <button
+                      className="text-red-500"
+                      onClick={() => {
+                        setSelectedCategory(category);
+                        setIsOpenConfirmDelete(true);
+                      }}
+                    >
+                      <DeleteIcon />
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              <Skeletons className="w-[300px] h-[60px] rounded-lg" />
+            )}
           </ResponsiveGrid>
         </div>
       </div>

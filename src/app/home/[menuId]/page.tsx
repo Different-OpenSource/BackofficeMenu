@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import ItemWithImage from "@/interfaces/ItemWIthImage";
 import ItemCard from "@/app/items/ItemCard";
 import { getImage } from "@/utils/R2";
+import { Skeletons } from "@/components/Skeleton";
 
 interface MenuItemParams {
   menuId: string;
@@ -17,8 +18,8 @@ export default function MenuItem({ params }: { params: MenuItemParams }) {
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(
     null
   );
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [items, setItems] = useState<ItemWithImage[]>([]);
+  const [categories, setCategories] = useState<Category[] | null>();
+  const [items, setItems] = useState<ItemWithImage[] | null>(null);
 
   async function getCategories() {
     try {
@@ -36,6 +37,7 @@ export default function MenuItem({ params }: { params: MenuItemParams }) {
     if (!selectedCategory) {
       return;
     }
+    setItems(null);
     try {
       const response = await APICaller(
         `/api/items?categoryId=${selectedCategory.id}`,
@@ -80,17 +82,21 @@ export default function MenuItem({ params }: { params: MenuItemParams }) {
           </button>
           <span className="font-semibold text-xl">Selecione a cartegoria</span>
           <ResponsiveGrid childWidth={350}>
-            {categories.map((category) => (
-              <div className="w-[350px] bg-white rounded-lg shadow-lg p-4 flex justify-between items-center gap-4 border-2 overflow-hidden">
-                <span className="truncate">{category.name}</span>
-                <button
-                  className="gap-2 flex font-semibold text-primary whitespace-nowrap"
-                  onClick={() => setSelectedCategory(category)}
-                >
-                  Selecionar Categoria
-                </button>
-              </div>
-            ))}
+            {categories ? (
+              categories.map((category) => (
+                <div className="w-[350px] bg-white rounded-lg shadow-lg p-4 flex justify-between items-center gap-4 border-2 overflow-hidden">
+                  <span className="truncate">{category.name}</span>
+                  <button
+                    className="gap-2 flex font-semibold text-primary whitespace-nowrap"
+                    onClick={() => setSelectedCategory(category)}
+                  >
+                    Selecionar Categoria
+                  </button>
+                </div>
+              ))
+            ) : (
+              <Skeletons className="w-[350px] h-[60px] rounded-lg" />
+            )}
           </ResponsiveGrid>
           {selectedCategory && (
             <Fragment>
@@ -98,9 +104,11 @@ export default function MenuItem({ params }: { params: MenuItemParams }) {
                 Itens da Categoria: {selectedCategory.name}
               </span>
               <ResponsiveGrid childWidth={384}>
-                {items.map((item, i) => (
-                  <ItemCard key={i} item={item} />
-                ))}
+                {items ? (
+                  items.map((item, i) => <ItemCard key={i} item={item} />)
+                ) : (
+                  <Skeletons className="w-[384px] h-32 rounded" />
+                )}
               </ResponsiveGrid>
             </Fragment>
           )}

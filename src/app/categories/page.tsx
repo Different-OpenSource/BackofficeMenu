@@ -5,9 +5,10 @@ import APICaller from "@/utils/APICaller";
 import { Menu } from "@prisma/client";
 import ResponsiveGrid from "@/components/ResponsiveGrid";
 import { useRouter } from "next/navigation";
+import { Skeletons } from "@/components/Skeleton";
 
 export default function Categories() {
-  const [menus, setMenus] = useState<Menu[]>([]);
+  const [menus, setMenus] = useState<Menu[] | null>(null);
   const router = useRouter();
   useEffect(() => {
     getMenus();
@@ -29,20 +30,24 @@ export default function Categories() {
           Selecione o cardápio
         </span>
         <ResponsiveGrid childWidth={300}>
-          {menus.map((menu) => (
-            <div
-              key={menu.id}
-              className="bg-white rounded-lg shadow-lg p-4 flex justify-between items-center gap-4 border-2 w-[300px] overflow-hidden whitespace-nowrap border-white"
-            >
-              <span className="truncate">{menu.name}</span>
-              <button
-                className="font-semibold text-primary"
-                onClick={() => router.push(`/categories/${menu.id}`)}
+          {menus ? (
+            menus.map((menu) => (
+              <div
+                key={menu.id}
+                className="bg-white rounded-lg shadow-lg p-4 flex justify-between items-center gap-4 border-2 w-[300px] overflow-hidden whitespace-nowrap border-white"
               >
-                Editar Categorias
-              </button>
-            </div>
-          ))}
+                <span className="truncate">{menu.name}</span>
+                <button
+                  className="font-semibold text-primary"
+                  onClick={() => router.push(`/categories/${menu.id}`)}
+                >
+                  Editar Categorias
+                </button>
+              </div>
+            ))
+          ) : (
+            <Skeletons className="w-[300px] h-[60px] rounded-lg" />
+          )}
         </ResponsiveGrid>
       </div>
     </div>
