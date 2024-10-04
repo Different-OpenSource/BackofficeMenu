@@ -8,7 +8,6 @@ export async function uploadFile(file: File) {
       `${process.env.NEXT_PUBLIC_FILE_UPLOAD_PATH}/api/uploadFile`,
       {
         method: "POST",
-        mode: "no-cors",
         body: formData,
       }
     );
