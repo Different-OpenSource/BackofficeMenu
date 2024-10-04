@@ -2,7 +2,7 @@ import { NumericFormat } from "react-number-format";
 import ThreeDotsIcon from "@/assets/ThreeDotsIcon";
 import { Fragment } from "react";
 import DropdownContextMenu from "@/components/DropdownContextMenu";
-import ItemWithImage from "@/interfaces/ItemWIthImage";
+import { Item } from "@prisma/client";
 
 export default function ItemCard({
   item,
@@ -10,7 +10,7 @@ export default function ItemCard({
   onDelete,
   onSelectCategories,
 }: {
-  item: ItemWithImage;
+  item: Item;
   onEdit?: () => void;
   onDelete?: () => void;
   onSelectCategories?: () => void;
@@ -40,10 +40,7 @@ export default function ItemCard({
         className="rounded shadow-md bg-white p-4 flex gap-4 w-96"
       >
         <div className="w-24 h-24 rounded-sm overflow-hidden">
-          <img
-            className="h-full w-full"
-            src={URL.createObjectURL(item.imageFile)}
-          ></img>
+          <img className="h-full w-full" src={item.image}></img>
         </div>
         <div className="flex flex-col flex-1 justify-between">
           <div>

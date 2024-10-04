@@ -5,7 +5,7 @@ import NumberInput from "@/components/NumberInput";
 import TextInput from "@/components/TextInput";
 import APICaller from "@/utils/APICaller";
 import { loaderToast } from "@/utils/loaderToast";
-import { pushImage } from "@/utils/R2";
+import { uploadFile } from "@/utils/uploadFile";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -68,19 +68,16 @@ export default function CreateItemModal({
   }
 
   async function postItem() {
-    const pushOptions = await pushImage(image!);
+    const url = await uploadFile(image!);
     const requestData = {
       description,
       price,
       shortDescription,
       name,
       internalDescription,
-      image: pushOptions.fileName,
+      image: url,
     };
-    const response = await APICaller("/api/item", "POST", requestData);
-    if (response.success) {
-      await pushOptions.uploadFile();
-    }
+    await APICaller("/api/item", "POST", requestData);
   }
   return (
     <Modal isOpen={isOpen} onClose={onClose}>

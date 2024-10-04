@@ -5,9 +5,7 @@ import { Fragment, useEffect, useState } from "react";
 import ResponsiveGrid from "@/components/ResponsiveGrid";
 import ChevronLeftIcon from "@/assets/ChevronLeftIcon";
 import { useRouter } from "next/navigation";
-import ItemWithImage from "@/interfaces/ItemWIthImage";
 import ItemCard from "@/app/items/ItemCard";
-import { getImage } from "@/utils/R2";
 import { Skeletons } from "@/components/Skeleton";
 
 interface MenuItemParams {
@@ -19,7 +17,7 @@ export default function MenuItem({ params }: { params: MenuItemParams }) {
     null
   );
   const [categories, setCategories] = useState<Category[] | null>();
-  const [items, setItems] = useState<ItemWithImage[] | null>(null);
+  const [items, setItems] = useState<Item[] | null>(null);
 
   async function getCategories() {
     try {
@@ -41,21 +39,9 @@ export default function MenuItem({ params }: { params: MenuItemParams }) {
     try {
       const response = await APICaller(
         `/api/items?categoryId=${selectedCategory.id}`,
-        "GET",
-        {}
+        "GET"
       );
-      const items: Item[] = response.allItems;
-      const map = new Map<string, File | Blob>();
-      const imagePromises = items.map(async (item) => {
-        const image = await getImage(item.image);
-        map.set(item.id, image);
-      });
-
-      Promise.all(imagePromises).then(() => {
-        setItems(
-          items.map((item) => ({ ...item, imageFile: map.get(item.id)! }))
-        );
-      });
+      setItems(response.items);
     } catch (error) {
       console.error("Erro ao buscar os menus:", error);
     }
