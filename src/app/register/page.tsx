@@ -4,6 +4,7 @@ import Button from "@/components/Button";
 import TextInput from "@/components/TextInput";
 import APICaller from "@/utils/APICaller";
 import { loaderToast } from "@/utils/loaderToast";
+import { useStoreRedirect } from "@/utils/useStoreRedirect";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -28,23 +29,8 @@ export default function Register() {
     });
   }
 
-  async function storeExists() {
-    try {
-      const response = await APICaller("/api/hasStore", "GET");
-      if (response.success) {
-        const exists = response.exists;
-        if (!exists) {
-          router.push("/createStore");
-        }
-      }
-    } catch (error) {
-      console.error("Erro ao criar restaurante:", error);
-    }
-  }
+  useStoreRedirect(true);
 
-  useEffect(() => {
-    storeExists();
-  }, []);
   return (
     <div className="flex w-full h-screen justify-center items-center">
       <div className="flex flex-col w-96 shadow-xl p-10 rounded-lg gap-2">

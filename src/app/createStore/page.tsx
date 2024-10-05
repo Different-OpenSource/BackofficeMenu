@@ -3,6 +3,7 @@ import Button from "@/components/Button";
 import TextInput from "@/components/TextInput";
 import APICaller from "@/utils/APICaller";
 import { loaderToast } from "@/utils/loaderToast";
+import { useStoreRedirect } from "@/utils/useStoreRedirect";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -13,23 +14,7 @@ export default function CreateStore() {
   const [description, setDescription] = useState("");
   const [image, setImage] = useState<File | null>(null);
 
-  useEffect(() => {
-    storeExists();
-  }, []);
-
-  async function storeExists() {
-    try {
-      const response = await APICaller("/api/hasStore", "GET");
-      if (response.success) {
-        const exists = response.exists;
-        if (exists) {
-          router.push("/home");
-        }
-      }
-    } catch (error) {
-      console.error("Erro ao fazer login:", error);
-    }
-  }
+  useStoreRedirect(false);
 
   function handleImageChange(event: any) {
     const file = event.target.files[0] as File;
