@@ -4,7 +4,7 @@ import Button from "@/components/Button";
 import TextInput from "@/components/TextInput";
 import APICaller from "@/utils/APICaller";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 export default function Login() {
@@ -12,6 +12,20 @@ export default function Login() {
   const [email, setEmail] = useState(params.get("email") || "");
   const [password, setPassword] = useState("");
   const router = useRouter();
+
+  async function storeExists() {
+    try {
+      const response = await APICaller("/api/hasStore", "GET");
+      if (response.success) {
+        const exists = response.exists;
+        if (!exists) {
+          router.push("/createStore");
+        }
+      }
+    } catch (error) {
+      console.error("Erro ao criar restaurante:", error);
+    }
+  }
 
   async function handleLogin() {
     if (!email || !password) {
@@ -31,6 +45,10 @@ export default function Login() {
       console.error("Erro ao fazer login:", error);
     }
   }
+
+  useEffect(() => {
+    storeExists();
+  }, []);
 
   return (
     <div className="flex w-full h-screen justify-center items-center flex-1">
