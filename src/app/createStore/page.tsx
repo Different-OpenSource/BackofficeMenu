@@ -3,9 +3,10 @@ import Button from "@/components/Button";
 import TextInput from "@/components/TextInput";
 import APICaller from "@/utils/APICaller";
 import { loaderToast } from "@/utils/loaderToast";
+import { uploadFile } from "@/utils/uploadFile";
 import { useStoreRedirect } from "@/utils/useStoreRedirect";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 
 export default function CreateStore() {
@@ -31,13 +32,15 @@ export default function CreateStore() {
     }
 
     loaderToast(
-      () =>
-        APICaller("/api/store", "POST", {
+      async () => {
+        const url = await uploadFile(image);
+
+        await APICaller("/api/store", "POST", {
           name,
           description,
-          image:
-            "https://dbdzm869oupei.cloudfront.net/img/vinylrugs/preview/26956.png",
-        }),
+          image: url,
+        });
+      },
       {
         success: "Restaurante criado com sucesso!",
         loading: "Criando restaurante...",

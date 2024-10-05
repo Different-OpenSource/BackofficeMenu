@@ -24,22 +24,24 @@ export default function Login() {
     }
     try {
       const requestData = { email, password };
-      const method = async () => {
-        const response = await APICaller("/api/login", "POST", requestData);
-        if (!response.success) {
-          throw new Error("Usuário ou senha inválidos");
-        }
-        localStorage.setItem("token", response.token);
-      };
 
-      loaderToast(method, {
-        success: "Login realizado com sucesso!",
-        loading: "Fazendo login...",
-        error: "Usuário ou senha inválidos",
-        onSuccess: () => {
-          router.push("/home");
+      loaderToast(
+        async () => {
+          const response = await APICaller("/api/login", "POST", requestData);
+          if (!response.success) {
+            throw new Error("Usuário ou senha inválidos");
+          }
+          localStorage.setItem("token", response.token);
         },
-      });
+        {
+          success: "Login realizado com sucesso!",
+          loading: "Fazendo login...",
+          error: "Usuário ou senha inválidos",
+          onSuccess: () => {
+            router.push("/home");
+          },
+        }
+      );
     } catch (error) {
       console.error("Erro ao fazer login:", error);
     }
