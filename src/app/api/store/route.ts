@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "../../../../lib/prisma";
 import { getDataToken } from "@/utils/getDataToken";
 
-export async function GET(request: NextRequest, response: NextResponse) {
+export async function GET(request: NextRequest) {
   try {
     const token = await getDataToken(request);
     const user = await prisma.user.findUnique({
@@ -19,6 +19,24 @@ export async function GET(request: NextRequest, response: NextResponse) {
     });
 
     return NextResponse.json({ store }, { status: 200 });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const data = await request.json();
+
+    await prisma.store.create({
+      data: {
+        name: data.name,
+        description: data.description,
+        image: data.image,
+      },
+    });
+
+    return NextResponse.json({ success: true }, { status: 200 });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }

@@ -13,7 +13,7 @@ export default function PageOrLoading({
 }) {
   const pathname = usePathname();
   const storeContext = useContext(StoreContext);
-  const hideHeaderPaths = ["/login", "/register", "/"];
+  const hideHeaderPaths = ["/login", "/register", "/createStore", "/"];
   if (hideHeaderPaths.some((path) => path === pathname)) {
     return children;
   }
