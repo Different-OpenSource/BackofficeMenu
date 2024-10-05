@@ -3,8 +3,9 @@
 import Button from "@/components/Button";
 import TextInput from "@/components/TextInput";
 import APICaller from "@/utils/APICaller";
+import { loaderToast } from "@/utils/loaderToast";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 export default function Register() {
@@ -18,20 +19,32 @@ export default function Register() {
     if (!email || !password || !name) {
       return;
     }
+    const requestData = { email, password, name };
+    loaderToast(() => APICaller("/api/register", "POST", requestData), {
+      success: "Registrado com sucesso!",
+      loading: "Registrando...",
+      error: "Erro ao registrar",
+      onSuccess: () => router.replace(`/login?email=${email}`),
+    });
+  }
+
+  async function storeExists() {
     try {
-      const requestData = { email, password, name };
-      const response = await APICaller("/api/register", "POST", requestData);
+      const response = await APICaller("/api/hasStore", "GET");
       if (response.success) {
-        toast.success("Registrado com sucesso!");
-        router.replace(`/login?email=${email}`);
+        const exists = response.exists;
+        if (!exists) {
+          router.push("/createStore");
+        }
       }
-      response.error && toast.error(response.error);
     } catch (error) {
-      toast.error("Erro ao registrar!");
-      console.error("Error ao registrar:", error);
+      console.error("Erro ao criar restaurante:", error);
     }
   }
 
+  useEffect(() => {
+    storeExists();
+  }, []);
   return (
     <div className="flex w-full h-screen justify-center items-center">
       <div className="flex flex-col w-96 shadow-xl p-10 rounded-lg gap-2">

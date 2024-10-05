@@ -16,10 +16,10 @@ export default function StoreContextProvider({
 }) {
   const [store, setStore] = useState<Store | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  
+
   async function getStoreData() {
     try {
-      const response = await APICaller("/api/store", "GET", {});
+      const response = await APICaller("/api/store", "GET");
       setStore(response.store);
       setLoading(false);
     } catch (error) {

@@ -2,6 +2,7 @@
 import Button from "@/components/Button";
 import TextInput from "@/components/TextInput";
 import APICaller from "@/utils/APICaller";
+import { loaderToast } from "@/utils/loaderToast";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -44,20 +45,21 @@ export default function CreateStore() {
       return;
     }
 
-    try {
-      const response = await APICaller("/api/store", "POST", {
-        name,
-        description,
-        image:
-          "https://dbdzm869oupei.cloudfront.net/img/vinylrugs/preview/26956.png",
-      });
-
-      if (response.success) {
-        router.push("/home");
+    loaderToast(
+      () =>
+        APICaller("/api/store", "POST", {
+          name,
+          description,
+          image:
+            "https://dbdzm869oupei.cloudfront.net/img/vinylrugs/preview/26956.png",
+        }),
+      {
+        success: "Restaurante criado com sucesso!",
+        loading: "Criando restaurante...",
+        error: "Erro ao criar restaurante",
+        onSuccess: () => router.push("/home"),
       }
-    } catch (error) {
-      console.error("Erro ao criar restaurante:", error);
-    }
+    );
   }
 
   return (
