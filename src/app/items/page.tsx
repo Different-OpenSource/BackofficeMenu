@@ -9,22 +9,19 @@ import ConfirmDecisionModal from "@/components/ConfirmDecisionModal";
 import EditItemModal from "@/components/itemModals/EditItemModal";
 import ItemCard from "./ItemCard";
 import CreateItemModal from "@/components/itemModals/CreateItemModal";
-import { deleteImage, getImage } from "@/utils/R2";
-import ItemWithImage from "@/interfaces/ItemWIthImage";
 import { Skeletons } from "@/components/Skeleton";
 import { loaderToast } from "@/utils/loaderToast";
 
 export default function Items() {
-  const [selectedItemEdit, setSelectedItemEdit] =
-    useState<ItemWithImage | null>(null);
   const [selectedItemDelete, setSelectedItemDelete] = useState<Item | null>(
     null
   );
+  const [selectedItemEdit, setSelectedItemEdit] = useState<Item | null>(null);
   const [selectedItemSelectCategories, setSelectedItemSelectCategories] =
     useState<Item | null>(null);
   const [isOpenCreateItem, setIsOpenCreateItem] = useState(false);
 
-  const [items, setItems] = useState<ItemWithImage[] | null>();
+  const [items, setItems] = useState<Item[] | null>();
   useEffect(() => {
     getItems();
   }, []);
@@ -32,18 +29,7 @@ export default function Items() {
   async function getItems() {
     try {
       const response = await APICaller("/api/allItems", "GET", {});
-      const items: Item[] = response.allItems;
-      const map = new Map<string, File | Blob>();
-      const imagePromises = items.map(async (item) => {
-        const image = await getImage(item.image);
-        map.set(item.id, image);
-      });
-
-      Promise.all(imagePromises).then(() => {
-        setItems(
-          items.map((item) => ({ ...item, imageFile: map.get(item.id)! }))
-        );
-      });
+      setItems(response.allItems);
     } catch (error) {
       console.error("Erro ao buscar os menus:", error);
     }
@@ -55,7 +41,6 @@ export default function Items() {
       success: "Item Excluído com sucesso!",
       error: "Erro ao excluir item!",
       onSuccess: () => {
-        deleteImage(item.image);
         getItems();
       },
     });

@@ -3,10 +3,10 @@ import Button from "@/components/Button";
 import Modal from "@/components/Modal";
 import NumberInput from "@/components/NumberInput";
 import TextInput from "@/components/TextInput";
-import ItemWithImage from "@/interfaces/ItemWIthImage";
 import APICaller from "@/utils/APICaller";
 import { loaderToast } from "@/utils/loaderToast";
-import { deleteImage, pushImage } from "@/utils/R2";
+import { uploadFile } from "@/utils/uploadFile";
+import { Item } from "@prisma/client";
 import { Fragment, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -16,7 +16,7 @@ export default function EditItemModal({
   onClose,
   updateItems,
 }: {
-  item: ItemWithImage;
+  item: Item;
   isOpen: boolean;
   onClose: () => void;
   updateItems: () => void;
@@ -62,9 +62,7 @@ export default function EditItemModal({
   }
 
   async function patchItem() {
-    const pushOptions = image
-      ? await pushImage(image)
-      : { fileName: item.image, uploadFile: async () => {} };
+    const url = image ? await uploadFile(image) : item.image;
 
     const requestData = {
       id: item.id,
@@ -73,17 +71,10 @@ export default function EditItemModal({
       shortDescription,
       name,
       internalDescription,
-      image: pushOptions.fileName,
+      image: url,
     };
 
-    const response = await APICaller("/api/item", "PATCH", requestData);
-    if (!response.success) {
-      return;
-    }
-    if (image) {
-      await pushOptions.uploadFile();
-      await deleteImage(item.image);
-    }
+    await APICaller("/api/item", "PATCH", requestData);
   }
 
   return (
